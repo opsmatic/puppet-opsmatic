@@ -1,4 +1,4 @@
-class opsmatic::debian-public {
+class opsmatic::debian {
 
   file { "opsmatic_public_debian_repo":
     path    => "/etc/apt/sources.list.d/opsmatic_public.list",
