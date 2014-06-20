@@ -16,5 +16,5 @@ script
     (setsid logger -t"opsmatic-puppet-reporter" <"/tmp/opsmatic-puppet-reporter.log" &)
     exec >"/tmp/opsmatic-puppet-reporter.log" 2>"/tmp/opsmatic-puppet-reporter.log"
     rm "/tmp/opsmatic-puppet-reporter.log"
-    exec sudo /usr/bin/opsmatic-puppet-reporter -event_http=<%= opsmatic_event_http %> -token=<%= @opsmatic_token %>
+    exec sudo /usr/bin/opsmatic-puppet-reporter -event_http=<%= opsmatic_event_http %> -token=<%= @token %>
 end script
