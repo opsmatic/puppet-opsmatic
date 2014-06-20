@@ -3,7 +3,7 @@
 include opsmatic::puppet-reporter-params
 
 class opsmatic::puppet-reporter (
-  $token = $opsmatic::puppet-reporter::params::token,
+  $token = $opsmatic::puppet-reporter-params::token,
 ) inherits opsmatic::puppet-reporter-params {
 
   if $token == "" {
