@@ -1,4 +1,4 @@
-class opsmatic::puppet-reporter::params {
+class opsmatic::puppet-reporter-params {
 
   # Integration token
   $token = ""

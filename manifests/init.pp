@@ -2,7 +2,7 @@
 #
 class opsmatic::puppet-reporter (
   $token = $opsmatic::puppet-reporter::params::token,
-) inherits opsmatic::puppet-reporter::params {
+) inherits opsmatic::puppet-reporter-params {
 
   if $token == "" {
     fail("Your Opsmatic install token is not defined in \$token")
