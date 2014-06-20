@@ -1,9 +1,9 @@
-class puppet-opsmatic::debian {
+class opsmatic::debian-public {
 
   file { "opsmatic_public_debian_repo":
     path    => "/etc/apt/sources.list.d/opsmatic_public.list",
     ensure  => file,
-    content => template("puppet-opsmatic/opsmatic_public.list.erb"),
+    content => template("opsmatic::puppet-reporter/opsmatic_public.list.erb"),
     notify  => Exec["opsmatic_public_update_repo_cache"],
     before  => Exec["opsmatic_public_debian_key"]
   }
