@@ -16,11 +16,9 @@ Usage
 To use this module you will need to set the variable `$opsmatic_token` in
 your puppet configuration:
 
-  node 'mynode.domain.com' {
-    class { opsmatic_puppet_reporter:
-      opsmatic_token => "my_integration_token",
+    class { 'opsmatic_puppet_reporter':
+      opsmatic_token => 'my_integration_token',
     }
-  }
 
 The manifest will handle the appropriate platform detection and configuration.
 
