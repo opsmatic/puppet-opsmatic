@@ -30,8 +30,9 @@ After that, the manifest will handle the appropriate platform detection and conf
 
 The Puppet reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
 
-# Attributes
- 
+Attributes
+----------
+
 * `$token` - this is your integration token.
 
 Support
