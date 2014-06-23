@@ -4,7 +4,7 @@ class opsmatic::puppet-reporter (
 
   case $operatingsystem {
     'Debian', 'Ubuntu': { include opsmatic::debian }
-    default: { fail("Opsmatic Puppet Reporter is not supported on this platform") }
+    default: { fail("Opsmatic Puppet Reporter only supported on Debian and Ubuntu") }
   }
 
   package { "opsmatic-puppet-reporter":
