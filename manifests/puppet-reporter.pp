@@ -2,6 +2,10 @@ class opsmatic::puppet-reporter (
   $token = $opsmatic::params::token,
 ) inherits opsmatic::params {
 
+  if $token == "" {
+    fail("Your Opsmatic install token is not defined in \$token")
+  }
+
   case $operatingsystem {
     'Debian', 'Ubuntu': { include opsmatic::debian }
     default: { fail("Opsmatic Puppet Reporter only supported on Debian and Ubuntu") }
