@@ -20,13 +20,16 @@ your puppet configuration:
       token => "my_integration_token",
     }
 
-and make sure `report: true` is set in the `[agent]` section of your `puppet.conf`.
+and make sure to set the report setting in your `puppet.conf` to true in order to turn on reporting capabilities on agent nodes:
 
-After that, the manifest will handle the appropriate platform detection and configuration. For all platforms the following steps are carried out:
+    [agent]
+        report = true
+
+After that, the manifest will handle the appropriate platform detection and configuration. For all supported platforms, the following steps are carried out:
 
 * The Opsmatic Beta repository is configured in your hosts package manager.
 * An update is triggered.
-* The latest version of the Puppet reporter is installed.
+* The latest version of the Puppet reporter is installed and started.
 
 The Puppet reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
 
