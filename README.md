@@ -16,7 +16,7 @@ Usage
 To use this module you will need to set the variable `$token` in
 your puppet configuration:
 
-    class { "opsmatic::init":
+    class { "opsmatic::puppet-reporter":
       token => "my_integration_token",
     }
 
