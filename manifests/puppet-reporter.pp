@@ -2,6 +2,11 @@ class opsmatic::puppet-reporter (
   $token = $opsmatic::params::token,
 ) inherits opsmatic::params {
 
+  case $operatingsystem {
+    'Debian', 'Ubuntu': { include opsmatic::debian }
+    default: { fail("Opsmatic Puppet Reporter only supported on Debian and Ubuntu") }
+  }
+
   package { "opsmatic-puppet-reporter":
     ensure  => present,
     require => File["opsmatic_public_debian_repo"]
