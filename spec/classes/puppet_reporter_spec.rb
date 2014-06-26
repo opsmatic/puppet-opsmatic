@@ -29,10 +29,30 @@ describe 'opsmatic::puppet_reporter', :type => 'class' do
     it do
       should compile.with_all_deps
       should contain_class('opsmatic::debian')
-      should contain_package('opsmatic-puppet-reporter')
-      should contain_service('opsmatic-puppet-reporter')
+      should contain_package('opsmatic-puppet-reporter').with(
+        'ensure' => 'present')
       should contain_file('/etc/init/opsmatic-puppet-reporter.conf').with(
+        'ensure'  => 'present',
         'content' => /api.opsmatic.com/)
+      should contain_service('opsmatic-puppet-reporter')
+    end
+  end
+
+  context 'token => 1234, ensure => absent' do
+    let(:facts) { FACTS }
+    let(:params) {{ :token => '1234', :ensure => 'absent' }}
+    it do
+      should compile.with_all_deps
+      should contain_package('opsmatic-puppet-reporter').with(
+        'ensure' => 'absent')
+      should contain_file('/etc/init/opsmatic-puppet-reporter.conf').with(
+        'ensure'  => 'absent',
+        'content' => /api.opsmatic.com/)
+
+      should_not contain_service('opsmatic-puppet-reporter')
+
+      should contain_exec('kill-opsmatic-puppet-reporter').with(
+        'command' => 'killall -9 opsmatic-puppet-reporter')
     end
   end
 

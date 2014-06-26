@@ -7,6 +7,8 @@
 # <TODO>
 #
 class opsmatic::params {
+  # Default Install State?
+  $puppet_reporter_ensure = 'present'
 
   # Integration token
   $token = ''
