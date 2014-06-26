@@ -16,8 +16,14 @@ Usage
 To use this module you will need to set the variable `$token` in
 your puppet configuration:
 
-    class { "opsmatic::puppet_reporter":
-      token => "my_integration_token",
+    class { 'opsmatic::puppet_reporter':
+      token => 'my_integration_token',
+    }
+
+or, to purge the puppet\_reporter from your hosts:
+
+    class { 'opsmatic::puppet_reporter':
+      ensure => 'absent';
     }
 
 and make sure to set the report setting in your `puppet.conf` to true in order to turn on reporting capabilities on agent nodes:

@@ -1,14 +1,26 @@
 # == Class: opsmatic-puppet_reporter
 #
+# === Required Parameters
+#
+# [*token*]
+#   The Global Install Token
+#
+# === Optional Parameters
+#
+# [*ensure*]
+#   Whether to ensure its installed, or ensure its uninstalled.
+#   (default: present) (options: present/absent)
+#
 # === Authors
 #
 # <TODO>
 #
 class opsmatic::puppet_reporter (
-  $token = $opsmatic::params::token,
+  $ensure = $opsmatic::params::puppet_reporter_ensure,
+  $token  = $opsmatic::params::token,
 ) inherits opsmatic::params {
 
-  if $token == '' {
+  if $token == '' and $ensure == 'present' {
     fail("Your Opsmatic install token is not defined in ${token}")
   }
 
@@ -21,25 +33,44 @@ class opsmatic::puppet_reporter (
     }
   }
 
+  # Install or Uninstall the Opsmatic Puppet Reporter. If $ensure above is
+  # absent, this will purge the reporter.
   package { 'opsmatic-puppet-reporter':
-    ensure  => present,
+    ensure  => $ensure,
     require => Class['opsmatic::debian'];
   }
 
-  service { 'opsmatic-puppet-reporter':
-    ensure   => running,
-    enable   => true,
-    provider => upstart,
-    require  => Package['opsmatic-puppet-reporter'];
-  }
-
+  # Install or uninstall the upstart job configuration file.
   file { '/etc/init/opsmatic-puppet-reporter.conf':
-    ensure  => file,
+    ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     content => template('opsmatic/puppet_reporter_upstart.erb'),
-    notify  => Service['opsmatic-puppet-reporter'];
   }
 
+  # Now, if we are installing the service, turn it on. If we're not, then
+  # the upstart job config doesn't exist anyways so we cannot use a service
+  # definition to stop the service. Instead, we call an exec to kill it.
+  case $ensure {
+    'present', 'installed': {
+      service { 'opsmatic-puppet-reporter':
+        ensure    => 'running',
+        enable    => true,
+        provider  => upstart,
+        subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
+        require   => [
+          Package['opsmatic-puppet-reporter'],
+          File['/etc/init/opsmatic-puppet-reporter.conf'],
+        ];
+      }
+    }
+    default: {
+      exec { 'kill-opsmatic-puppet-reporter':
+        command => 'killall -9 opsmatic-puppet-reporter',
+        onlyif  => 'pgrep -f opsmatic-puppet-reporter',
+        path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ];
+      }
+    }
+  }
 }
