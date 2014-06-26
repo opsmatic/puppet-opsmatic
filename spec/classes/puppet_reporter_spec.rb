@@ -38,9 +38,9 @@ describe 'opsmatic::puppet_reporter', :type => 'class' do
     end
   end
 
-  context 'token => 1234, ensure => absent' do
+  context 'ensure => absent' do
     let(:facts) { FACTS }
-    let(:params) {{ :token => '1234', :ensure => 'absent' }}
+    let(:params) {{ :ensure => 'absent' }}
     it do
       should compile.with_all_deps
       should contain_package('opsmatic-puppet-reporter').with(

@@ -9,7 +9,7 @@
 #
 # [*ensure*]
 #   Whether to ensure its installed, or ensure its uninstalled.
-#   (default: present)
+#   (default: present) (options: present/absent)
 #
 # === Authors
 #
@@ -20,7 +20,7 @@ class opsmatic::puppet_reporter (
   $token  = $opsmatic::params::token,
 ) inherits opsmatic::params {
 
-  if $token == '' {
+  if $token == '' and $ensure == 'present' {
     fail("Your Opsmatic install token is not defined in ${token}")
   }
 
