@@ -1,2 +1,8 @@
-class opsmatic::init {
+# == Class: opsmatic::init
+#
+# === Authors
+#
+# <TODO>
+#
+class opsmatic {
 }
