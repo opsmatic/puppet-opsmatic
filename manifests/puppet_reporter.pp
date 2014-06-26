@@ -19,14 +19,14 @@ class opsmatic::puppet_reporter (
 
   package { 'opsmatic-puppet-reporter':
     ensure  => present,
-    require => File['opsmatic_public_debian_repo']
+    require => File['opsmatic_public_debian_repo'];
   }
 
   service { 'opsmatic-puppet-reporter':
     ensure   => running,
-    enable   => true;
+    enable   => true,
     provider => upstart,
-    require  => Package['opsmatic-puppet-reporter'],
+    require  => Package['opsmatic-puppet-reporter'];
   }
 
   file { '/etc/init/opsmatic-puppet-reporter.conf':
@@ -35,7 +35,7 @@ class opsmatic::puppet_reporter (
     group   => 'root',
     mode    => '0644',
     content => template('opsmatic/puppet_reporter_upstart.erb'),
-    notify  => Service['opsmatic-puppet-reporter'],
+    notify  => Service['opsmatic-puppet-reporter'];
   }
 
 }
