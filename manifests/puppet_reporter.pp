@@ -55,8 +55,8 @@ class opsmatic::puppet_reporter (
   case $ensure {
     'present', 'installed': {
       service { 'opsmatic-puppet-reporter':
-        ensure    => $service_ensure,
-        enable    => $service_enable,
+        ensure    => 'running',
+        enable    => true,
         provider  => upstart,
         subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
         require   => [
