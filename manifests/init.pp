@@ -4,5 +4,5 @@
 #
 # <TODO>
 #
-class opsmatic::init {
+class opsmatic {
 }
