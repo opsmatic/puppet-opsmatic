@@ -6,7 +6,7 @@
 #
 # <TODO>
 #
-class opsmatic::debian-agent(
+class opsmatic::debian-private(
   $credentials = ''
 ) {
 
@@ -14,7 +14,7 @@ class opsmatic::debian-agent(
     key_source => "https://${credentials}@apt.opsmatic.com/keyring.gpg",
   }
 
-  apt::source { 'opsmatic_agent_public_debian_repo':
+  apt::source { 'opsmatic_agent_private_debian_repo':
     location    => "https://${credentials}@apt.opsmatic.com",
     include_src => false,
     repos       => 'main';

@@ -35,7 +35,7 @@ class opsmatic::agent (
 
   case $operatingsystem {
     'Debian', 'Ubuntu': {
-      class {'opsmatic::debian-agent':
+      class {'opsmatic::debian-private':
         credentials => $credentials,
       }
     }
@@ -49,7 +49,7 @@ class opsmatic::agent (
   package { 'opsmatic-agent':
     ensure  => present,
     notify  => Exec['opsmatic_agent_initial_configuration'],
-    require => Class['opsmatic::debian-agent'];
+    require => Class['opsmatic::debian-private'];
   }
 
   # Prepares the execution of the agent.

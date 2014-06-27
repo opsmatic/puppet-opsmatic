@@ -6,7 +6,7 @@
 #
 # <TODO>
 #
-class opsmatic::debian-reporter {
+class opsmatic::debian {
 
   apt::key { 'D59097AB':
     key_source => 'https://packagecloud.io/gpg.key',

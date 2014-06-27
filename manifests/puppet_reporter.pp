@@ -28,7 +28,7 @@ class opsmatic::puppet_reporter (
 
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
-      include opsmatic::debian-reporter
+      include opsmatic::debian
     }
     default: {
       fail('Opsmatic Puppet Reporter only supported on Debian and Ubuntu')
@@ -39,7 +39,7 @@ class opsmatic::puppet_reporter (
   # absent, this will purge the reporter.
   package { 'opsmatic-puppet-reporter':
     ensure  => $ensure,
-    require => Class['opsmatic::debian-reporter'];
+    require => Class['opsmatic::debian'];
   }
 
   # Install or uninstall the upstart job configuration file.
