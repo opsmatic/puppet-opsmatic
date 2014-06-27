@@ -10,7 +10,7 @@ class opsmatic::debian-private(
   $credentials = ''
 ) {
 
-  apt::key { 'D59097AC':
+  apt::key { 'CB1C35E2':
     key_source => "https://${credentials}@apt.opsmatic.com/keyring.gpg",
   }
 
