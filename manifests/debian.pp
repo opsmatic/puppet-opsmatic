@@ -12,7 +12,7 @@ class opsmatic::debian {
     key_source => 'https://packagecloud.io/gpg.key',
   }
 
-  apt::source { 'opsmatic_reporter_debian_repo':
+  apt::source { 'opsmatic_debian_repo':
     location    => 'https://packagecloud.io/opsmatic/public/any/',
     include_src => false,
     release     => 'any',
