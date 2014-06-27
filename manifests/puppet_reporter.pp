@@ -13,7 +13,7 @@
 #
 # === Authors
 #
-# <TODO>
+# Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::puppet_reporter (
   $ensure = $opsmatic::params::puppet_reporter_ensure,
@@ -33,7 +33,7 @@ class opsmatic::puppet_reporter (
     }
   }
 
-  # Install or Uninstall the Opsmatic Puppet Reporter. If $ensure above is
+  # Install or uninstall the Opsmatic Puppet reporter. If $ensure above is
   # absent, this will purge the reporter.
   package { 'opsmatic-puppet-reporter':
     ensure  => $ensure,
