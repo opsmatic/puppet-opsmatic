@@ -1,4 +1,4 @@
-# == Class opsmatic::debian-agent
+# == Class opsmatic::debian_private
 #
 # Installs Opsmatic repo on a Debian host.
 #
@@ -6,7 +6,7 @@
 #
 # <TODO>
 #
-class opsmatic::debian-private(
+class opsmatic::debian_private(
   $credentials = ''
 ) {
 

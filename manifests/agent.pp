@@ -26,16 +26,16 @@ class opsmatic::agent (
 ) inherits opsmatic::params {
 
   if $token == '' {
-    fail('Your Opsmatic install token is not defined in ${token}')
+    fail("Your Opsmatic install token is not defined in ${token}")
   }
 
   if $credentials == '' {
-    fail('Your Opsmatic credentials are not defined in ${credentials}')
+    fail("Your Opsmatic credentials are not defined in ${credentials}")
   }
 
-  case $operatingsystem {
+  case $::operatingsystem {
     'Debian', 'Ubuntu': {
-      class {'opsmatic::debian-private':
+      class {'opsmatic::debian_private':
         credentials => $credentials,
       }
     }
@@ -49,12 +49,12 @@ class opsmatic::agent (
   package { 'opsmatic-agent':
     ensure  => present,
     notify  => Exec['opsmatic_agent_initial_configuration'],
-    require => Class['opsmatic::debian-private'];
+    require => Class['opsmatic::debian_private'];
   }
 
   # Prepares the execution of the agent.
   exec { 'opsmatic_agent_initial_configuration':
-    command     => "/usr/bin/config-opsmatic-agent --token=$token",
+    command     => "/usr/bin/config-opsmatic-agent --token=${token}",
     creates     => '/var/db/opsmatic-agent/identity/host_id',
     require     => Package['opsmatic-agent'],
     refreshonly => true
