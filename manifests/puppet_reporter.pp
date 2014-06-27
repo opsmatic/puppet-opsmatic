@@ -2,6 +2,8 @@
 #
 # === Required Parameters
 #
+# [*ensure*]
+#   Install or uninstall the Puppet reporter
 # [*token*]
 #   The Global Install Token
 #
@@ -26,18 +28,18 @@ class opsmatic::puppet_reporter (
 
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
-      include opsmatic::debian
+      include opsmatic::debian-reporter
     }
     default: {
       fail('Opsmatic Puppet Reporter only supported on Debian and Ubuntu')
     }
   }
 
-  # Install or Uninstall the Opsmatic Puppet Reporter. If $ensure above is
+  # Install or uninstall the Opsmatic Puppet reporter. If $ensure above is
   # absent, this will purge the reporter.
   package { 'opsmatic-puppet-reporter':
     ensure  => $ensure,
-    require => Class['opsmatic::debian'];
+    require => Class['opsmatic::debian-reporter'];
   }
 
   # Install or uninstall the upstart job configuration file.
