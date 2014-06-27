@@ -4,7 +4,7 @@
 #
 # === Authors
 #
-# <TODO>
+# Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::params {
   # Default Puppet reporter state

@@ -4,11 +4,15 @@
 #
 # === Authors
 #
-# <TODO>
+# Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::debian_private(
-  $credentials = ''
+  $credentials = '',
 ) {
+
+  if $credentials == '' {
+    fail("Your Opsmatic credentials are not defined in ${credentials}")
+  }
 
   apt::key { 'CB1C35E2':
     key_source => "https://${credentials}@apt.opsmatic.com/keyring.gpg",

@@ -2,12 +2,11 @@
 #
 # === Required Parameters
 #
-# [*ensure*]
-#   Install or uninstall the agent
 # [*token*]
 #   The Global Install Token
+#
 # [*credentials*]
-#   The cerdentials to install the Opsmatic agent package
+#   The credentials to install the Opsmatic agent package
 #
 # === Optional Parameters
 #
@@ -17,11 +16,11 @@
 #
 # === Authors
 #
-# <TODO>
+# Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::agent (
-  $ensure = $opsmatic::params::agent_ensure,
-  $token = $opsmatic::params::token,
+  $ensure      = $opsmatic::params::agent_ensure,
+  $token       = $opsmatic::params::token,
   $credentials = $opsmatic::params::credentials,
 ) inherits opsmatic::params {
 
@@ -47,7 +46,7 @@ class opsmatic::agent (
   # Install or uninstall the Opsmatic agent. If $ensure above is
   # absent, this will purge the agent.
   package { 'opsmatic-agent':
-    ensure  => present,
+    ensure  => $ensure,
     notify  => Exec['opsmatic_agent_initial_configuration'],
     require => Class['opsmatic::debian_private'];
   }
@@ -56,8 +55,8 @@ class opsmatic::agent (
   exec { 'opsmatic_agent_initial_configuration':
     command     => "/usr/bin/config-opsmatic-agent --token=${token}",
     creates     => '/var/db/opsmatic-agent/identity/host_id',
+    refreshonly => true,
     require     => Package['opsmatic-agent'],
-    refreshonly => true
   }
 
   # Now, if we are installing the agent, turn it on. If we're not, then
@@ -69,6 +68,7 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
+        subscribe => Exec['opsmatic_agent_initial_configuration'],
         require   => [
           Package['opsmatic-agent'],
           Exec['opsmatic_agent_initial_configuration'],

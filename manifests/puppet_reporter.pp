@@ -2,8 +2,6 @@
 #
 # === Required Parameters
 #
-# [*ensure*]
-#   Install or uninstall the Puppet reporter
 # [*token*]
 #   The Global Install Token
 #
@@ -15,7 +13,7 @@
 #
 # === Authors
 #
-# <TODO>
+# Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::puppet_reporter (
   $ensure = $opsmatic::params::puppet_reporter_ensure,
