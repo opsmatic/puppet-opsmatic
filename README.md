@@ -35,6 +35,8 @@ your puppet configuration:
       credentials => 'my_credentials',
     }
 
+You can get these credentials from https://beta.opsmatic.com/docs/agent-installation
+
 For all supported platforms, the following steps are carried out:
 
 * The Opsmatic Beta repository is configured in your hosts package manager.
