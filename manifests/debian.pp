@@ -9,7 +9,7 @@
 class opsmatic::debian {
 
   apt::key { 'D59097AB':
-    key_source => 'https://packagecloud.io/gpg.key',
+    key_content => template('opsmatic/D59097AB.key');
   }
 
   apt::source { 'opsmatic_debian_repo':
