@@ -19,7 +19,7 @@ class opsmatic::debian_private(
     include_src => false,
     repos       => 'main',
     key         => 'CB1C35E2',
-    key_source  => "https://${credentials}@apt.opsmatic.com/keyring.gpg",
+    key_content => template('opsmatic/CB1C35E2.key');
   }
 
 }
