@@ -7,16 +7,12 @@
 # Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::debian {
-
-  apt::key { 'D59097AB':
-    key_source => 'https://packagecloud.io/gpg.key',
-  }
-
   apt::source { 'opsmatic_debian_repo':
     location    => 'https://packagecloud.io/opsmatic/public/any/',
     include_src => false,
     release     => 'any',
-    repos       => 'main';
+    repos       => 'main',
+    key         => 'D59097AB',
+    key_content => template('opsmatic/D59097AB.key');
   }
-
 }

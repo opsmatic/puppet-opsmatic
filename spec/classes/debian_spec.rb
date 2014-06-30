@@ -17,10 +17,9 @@ describe 'opsmatic::debian', :type => 'class' do
     let(:facts) { FACTS }
     it do
       should compile.with_all_deps
-      should contain_apt__key('D59097AB').with(
-        'key_source' => 'https://packagecloud.io/gpg.key')
       should contain_apt__source('opsmatic_debian_repo').with(
-        'location' => 'https://packagecloud.io/opsmatic/public/any/')
+        'location' => 'https://packagecloud.io/opsmatic/public/any/',
+        'key_content' => /mQINBFLUbogBEADceEoxBDoE6QM5xV/)
     end
   end
 end

@@ -18,10 +18,10 @@ describe 'opsmatic::debian_private', :type => 'class' do
     let(:params) {{ :credentials => 'foo:goo' }}
     it do
       should compile.with_all_deps
-      should contain_apt__key('CB1C35E2').with(
-        'key_source' => "https://foo:goo@apt.opsmatic.com/keyring.gpg")
       should contain_apt__source('opsmatic_agent_private_debian_repo').with(
-        'location' => "https://foo:goo@apt.opsmatic.com")
+        'key'         => 'CB1C35E2',
+        'key_content' => /mQENBFJ9ZXYBCACa/,
+        'location'    => "https://foo:goo@apt.opsmatic.com")
     end
   end
 end
