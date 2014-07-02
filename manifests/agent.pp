@@ -47,7 +47,6 @@ class opsmatic::agent (
   # absent, this will purge the agent.
   package { 'opsmatic-agent':
     ensure  => $ensure,
-    notify  => Exec['opsmatic_agent_initial_configuration'],
     require => Class['opsmatic::debian_private'];
   }
 
@@ -56,7 +55,6 @@ class opsmatic::agent (
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed': {
-
       # Configure the agent client certs
       exec { 'opsmatic_agent_initial_configuration':
         command     => "/usr/bin/config-opsmatic-agent --token=${token}",
@@ -65,7 +63,7 @@ class opsmatic::agent (
           'test ! -f /var/db/opsmatic-agent/identity/client-key.key',
           'test ! -f /var/db/opsmatic-agent/identity/client-pem.pem',
         ],
-        require     => Package['opsmatic-agent'],
+        require     => Package['opsmatic-agent'];
       }
 
       # Prepares the execution of the agent.
@@ -79,17 +77,13 @@ class opsmatic::agent (
           Exec['opsmatic_agent_initial_configuration'],
         ];
       }
-
     }
     default: {
-
       exec { 'kill-opsmatic-agent':
         command => 'killall -9 opsmatic-agent',
         onlyif  => 'pgrep -f opsmatic-agent',
         path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ];
       }
-
     }
   }
-
 }
