@@ -63,7 +63,9 @@ class opsmatic::agent (
           'test ! -f /var/db/opsmatic-agent/identity/client-key.key',
           'test ! -f /var/db/opsmatic-agent/identity/client-pem.pem',
         ],
-        require     => Package['opsmatic-agent'];
+        path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+        notify  => Service['opsmatic-agent'],
+        require => Package['opsmatic-agent'];
       }
 
       # Prepares the execution of the agent.
@@ -71,11 +73,7 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => Exec['opsmatic_agent_initial_configuration'],
-        require   => [
-          Package['opsmatic-agent'],
-          Exec['opsmatic_agent_initial_configuration'],
-        ];
+        require   => Package['opsmatic-agent'];
       }
     }
     default: {
