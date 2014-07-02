@@ -31,6 +31,8 @@ describe 'opsmatic::agent', :type => 'class' do
       should contain_class('opsmatic::debian_private')
       should contain_package('opsmatic-agent').with(
         'ensure' => 'present')
+      should contain_exec('opsmatic_agent_initial_configuration').with(
+        'command' => '/usr/bin/config-opsmatic-agent --token=1234')
       should contain_service('opsmatic-agent')
     end
   end
@@ -43,6 +45,7 @@ describe 'opsmatic::agent', :type => 'class' do
     it do
       should compile.with_all_deps
       should_not contain_service('opsmatic-agent')
+      should_not contain_exec('opsmatic_agent_initial_configuration')
       should contain_exec('kill-opsmatic-agent').with(
         'command' => 'killall -9 opsmatic-agent')
     end

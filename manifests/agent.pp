@@ -51,19 +51,24 @@ class opsmatic::agent (
     require => Class['opsmatic::debian_private'];
   }
 
-  # Prepares the execution of the agent.
-  exec { 'opsmatic_agent_initial_configuration':
-    command     => "/usr/bin/config-opsmatic-agent --token=${token}",
-    creates     => '/var/db/opsmatic-agent/identity/host_id',
-    refreshonly => true,
-    require     => Package['opsmatic-agent'],
-  }
-
   # Now, if we are installing the agent, turn it on. If we're not, then
   # the upstart job config doesn't exist anyways so we cannot use a service
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed': {
+
+      # Configure the agent client certs
+      exec { 'opsmatic_agent_initial_configuration':
+        command     => "/usr/bin/config-opsmatic-agent --token=${token}",
+        onlyif      => [
+          'test ! -f /var/db/opsmatic-agent/identity/host_id',
+          'test ! -f /var/db/opsmatic-agent/identity/client-key.key',
+          'test ! -f /var/db/opsmatic-agent/identity/client-pem.pem',
+        ],
+        require     => Package['opsmatic-agent'],
+      }
+
+      # Prepares the execution of the agent.
       service { 'opsmatic-agent':
         ensure    => 'running',
         enable    => true,
@@ -74,13 +79,16 @@ class opsmatic::agent (
           Exec['opsmatic_agent_initial_configuration'],
         ];
       }
+
     }
     default: {
+
       exec { 'kill-opsmatic-agent':
         command => 'killall -9 opsmatic-agent',
         onlyif  => 'pgrep -f opsmatic-agent',
         path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ];
       }
+
     }
   }
 
