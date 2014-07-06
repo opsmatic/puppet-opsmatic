@@ -13,7 +13,7 @@ The Opsmatic Puppet Reporter is supported on the following platforms:
 Usage
 -----
 
-To use this module to install Opsmatic Puppet reporter you will need to set the variable `$token` in
+To use this module to install Opsmatic Puppet Reporter you will need to set the variable `$token` in
 your puppet configuration:
 
     class { 'opsmatic::puppet_reporter':
@@ -25,7 +25,7 @@ and make sure to set the report setting in your `puppet.conf` to true in order t
     [agent]
         report = true
 
-After that, the manifest will handle the appropriate platform detection and configuration. The Puppet reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
+After that, the manifest will handle the appropriate platform detection and configuration. The Puppet Reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
 
 To use this module to install Opsmatic agent you will need to set the variable `$token` and your credentials `$credentials` in
 your puppet configuration:
@@ -41,10 +41,10 @@ For all supported platforms, the following steps are carried out:
 
 * The Opsmatic Beta repository is configured in your hosts package manager.
 * An update is triggered.
-* The latest version of the Opsmatic agent or Puppet reporter is installed and started.
+* The latest version of the Opsmatic agent or Puppet Reporter is installed and started.
 
 
-If you ever want to purge the Opsmatic agent or the Puppet reporter from your hosts:
+If you ever want to purge the Opsmatic agent or the Puppet Reporter from your hosts:
 
     class { 'opsmatic::puppet_reporter':
       ensure => 'absent';
