@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/opsmatic/puppet-opsmatic.svg?branch=master)](https://travis-ci.org/opsmatic/puppet-opsmatic)
+
 Opsmatic Puppet Reporter - Puppet Module
 ======================
 
