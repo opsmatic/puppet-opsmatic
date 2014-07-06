@@ -1,19 +1,22 @@
-Opsmatic Puppet Reporter - Puppet Module
+Opsmatic Puppet Module
 ======================
 
 [![Build Status](https://travis-ci.org/opsmatic/puppet-opsmatic.svg?branch=master)](https://travis-ci.org/opsmatic/puppet-opsmatic)
 
+
 Overview
 --------
 
-This module installs and configures the Opsmatic Puppet Reporter.
+This module installs and configures the Opsmatic Puppet Reporter and the Opsmatic Agent.
+
 
 Requirements
 ------------
 
-The Opsmatic Puppet Reporter is supported on the following platforms:
+The Opsmatic Puppet Reporter and the Opsmatic Agent are supported on the following platforms:
 
   * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04 and 13.10.
+
 
 Usage
 -----
@@ -32,7 +35,7 @@ and make sure to set the report setting in your `puppet.conf` to true in order t
 
 After that, the manifest will handle the appropriate platform detection and configuration. The Puppet Reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
 
-To use this module to install Opsmatic agent you will need to set the variable `$token` and your credentials `$credentials` in
+To use this module to install Opsmatic Agent you will need to set the variable `$token` and your credentials `$credentials` in
 your puppet configuration:
 
     class { 'opsmatic::agent':
@@ -46,10 +49,10 @@ For all supported platforms, the following steps are carried out:
 
 * The Opsmatic Beta repository is configured in your hosts package manager.
 * An update is triggered.
-* The latest version of the Opsmatic agent or Puppet Reporter is installed and started.
+* The latest version of the Opsmatic Agent and/or Puppet Reporter is installed and started.
 
 
-If you ever want to purge the Opsmatic agent or the Puppet Reporter from your hosts:
+If you ever want to purge the Opsmatic Agent or the Puppet Reporter from your hosts:
 
     class { 'opsmatic::puppet_reporter':
       ensure => 'absent';
@@ -60,6 +63,9 @@ Attributes
 ----------
 
 * `$token` - this is your integration token.
+
+* `$credentials` - to the Opsmatic packages repo.
+
 
 Support
 -------
