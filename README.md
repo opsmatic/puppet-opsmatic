@@ -15,7 +15,7 @@ Requirements
 
 The Opsmatic Puppet Reporter and the Opsmatic Agent are supported on the following platforms:
 
-  * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04 and 13.10.
+  * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04, 13.10 and 14.04.
 
 
 Usage
