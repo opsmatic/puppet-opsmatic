@@ -17,5 +17,5 @@ script
     exec >"/tmp/opsmatic-puppet-reporter.log" 2>"/tmp/opsmatic-puppet-reporter.log"
     rm "/tmp/opsmatic-puppet-reporter.log"
     test -e /etc/default/opsmatic-agent && . /etc/default/opsmatic-agent
-    exec /usr/bin/opsmatic-puppet-reporter -event_http=<%= opsmatic_event_http %> -token=<%= @token %>
+    exec /usr/bin/opsmatic-puppet-reporter -event_http=<%= @opsmatic_event_http %> -token=<%= @token %>
 end script
