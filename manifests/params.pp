@@ -16,10 +16,12 @@ class opsmatic::params {
   # Integration token
   $token = ''
 
+  # Paths to ignore by the Opsmatic Gent
+  $paths_ignore = []
+
   # Agent credentials
   $credentials = ''
 
   # Opsmatic webhooks events endpoint
   $opsmatic_event_http = 'https://api.opsmatic.com/webhooks/events'
-
 }
