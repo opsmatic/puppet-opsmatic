@@ -14,14 +14,19 @@
 #   Whether to ensure its installed, or ensure its uninstalled.
 #   (default: present) (options: present/absent)
 #
+# [*paths_ignore*]
+#   An array of paths to ignore (not monitor).
+#   (default: [])
+#
 # === Authors
 #
 # Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::agent (
-  $ensure      = $opsmatic::params::agent_ensure,
-  $token       = $opsmatic::params::token,
-  $credentials = $opsmatic::params::credentials,
+  $ensure       = $opsmatic::params::agent_ensure,
+  $token        = $opsmatic::params::token,
+  $credentials  = $opsmatic::params::credentials,
+  $paths_ignore = $opsmatic::params::paths_ignore,
 ) inherits opsmatic::params {
 
   if $token == '' {
@@ -31,6 +36,8 @@ class opsmatic::agent (
   if $credentials == '' {
     fail("Your Opsmatic credentials are not defined in ${credentials}")
   }
+
+  validate_array($paths_ignore)
 
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
@@ -48,6 +55,14 @@ class opsmatic::agent (
   package { 'opsmatic-agent':
     ensure  => $ensure,
     require => Class['opsmatic::debian_private'];
+  }
+
+  file { '/etc/opsmatic-agent.conf':
+    ensure  => $ensure,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0640',
+    content => template('opsmatic/opsmatic-agent.conf.erb'),
   }
 
   # Now, if we are installing the agent, turn it on. If we're not, then
@@ -73,6 +88,7 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
+        subscribe => File['/etc/opsmatic-agent.conf'],
         require   => Package['opsmatic-agent'];
       }
     }

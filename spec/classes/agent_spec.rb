@@ -33,10 +33,34 @@ describe 'opsmatic::agent', :type => 'class' do
       should contain_class('opsmatic::debian_private')
       should contain_package('opsmatic-agent').with(
         'ensure' => 'present')
+      should contain_file('/etc/opsmatic-agent.conf').with(
+        'content' => /paths_ignore = \[\]/)
       should contain_exec('opsmatic_agent_initial_configuration').with(
         'command' => '/usr/bin/config-opsmatic-agent --token=1234')
       should contain_service('opsmatic-agent')
     end
+  end
+
+  context 'token => 1234, credentials => foo:goo, paths_ignore => [/foo, /bar, /baz]' do
+    let(:facts) { FACTS }
+    let(:params) {{
+      :token => '1234', :credentials => 'foo:goo',
+      :paths_ignore => [ '/foo', '/bar', '/baz' ],
+    }}
+    it do
+      should compile.with_all_deps
+      should contain_file('/etc/opsmatic-agent.conf').with(
+        'content' => /paths_ignore = \[\"\/foo\", \"\/bar\", \"\/baz\"\]/)
+    end
+  end
+
+  context 'token => 1234, credentials => foo:goo, paths_ignore => string should fail' do
+    let(:facts) { FACTS }
+    let(:params) {{
+      :token => '1234', :credentials => 'foo:goo',
+      :paths_ignore => 'string',
+    }}
+    it { expect { should compile.with_all_deps }.to raise_error(/not an Array/) }
   end
 
   context 'ensure => absent' do
