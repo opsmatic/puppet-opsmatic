@@ -16,6 +16,7 @@ Requirements
 The Opsmatic Puppet Reporter and the Opsmatic Agent are supported on the following platforms:
 
   * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04, 13.10 and 14.04.
+  * Debian: 7.x.
 
 
 Usage
@@ -45,14 +46,15 @@ your puppet configuration:
 
 You can get these credentials from https://beta.opsmatic.com/docs/agent-installation
 
-For all supported platforms, the following steps are carried out:
+It is possible to specify a list of paths that should not be monitored by the agent, via the variable `$paths_ignore`: 
 
-* The Opsmatic Beta repository is configured in your hosts package manager.
-* An update is triggered.
-* The latest version of the Opsmatic Agent and/or Puppet Reporter is installed and started.
+    class { 'opsmatic::agent':
+      paths_ignore => ['/etc/alternatives'],
+    }
 
+For a more in depth explanation of `$paths_ignore`, please visit the documentation in https://beta.opsmatic.com/docs/agent-configuration
 
-If you ever want to purge the Opsmatic Agent or the Puppet Reporter from your hosts:
+Finally, if you ever want to purge the Opsmatic Agent or the Puppet Reporter from your hosts, use the following:
 
     class { 'opsmatic::puppet_reporter':
       ensure => 'absent';
@@ -63,8 +65,9 @@ Attributes
 ----------
 
 * `$token` - this is your integration token.
-
 * `$credentials` - to the Opsmatic packages repo.
+* `$ensure` - to ensure the Agent or Puppet Reporter is installed or uninstalled.
+* `$paths_ignore` - list of paths to ignore (not monitor).
 
 
 Support
