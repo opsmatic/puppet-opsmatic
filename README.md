@@ -46,14 +46,6 @@ your puppet configuration:
 
 You can get these credentials from https://beta.opsmatic.com/docs/agent-installation.
 
-It is possible to specify a list of paths that should not be monitored by the agent, via the variable `$paths_ignore`: 
-
-    class { 'opsmatic::agent':
-      paths_ignore => ['/etc/alternatives'],
-    }
-
-For a more in depth explanation of `$paths_ignore`, please visit the documentation in https://beta.opsmatic.com/docs/agent-configuration.
-
 Finally, if you ever want to purge the Opsmatic Agent or the Puppet Reporter from your hosts, use the following:
 
     class { 'opsmatic::puppet_reporter':
@@ -67,7 +59,6 @@ Attributes
 * `$token` - this is your integration token.
 * `$credentials` - to the Opsmatic packages repo.
 * `$ensure` - to ensure the Agent or Puppet Reporter is installed or uninstalled.
-* `$paths_ignore` - list of paths to ignore (not monitor).
 
 
 Support
