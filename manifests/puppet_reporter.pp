@@ -42,7 +42,7 @@ class opsmatic::puppet_reporter (
       }
     }
     default: {
-      fail('Opsmatic Puppet reporter is not supported on this platform')
+      fail('Opsmatic Puppet Reporter is not supported on this platform')
     }
   }
 
