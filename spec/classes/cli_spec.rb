@@ -12,16 +12,23 @@ FACTS = {
   :kernel => 'linux',
 }
 
-describe 'opsmatic::debian_private', :type => 'class' do
+describe 'opsmatic::cli', :type => 'class' do
+
   context 'default params' do
     let(:facts) { FACTS }
-    let(:params) {{ :credentials => 'foo:goo' }}
     it do
       should compile.with_all_deps
-      should contain_apt__source('opsmatic_agent_private_debian_repo').with(
-        'key'         => 'CB1C35E2',
-        'key_content' => /mQENBFJ9ZXYBCACa/,
-        'location'    => "https://foo:goo@apt.opsmatic.com")
     end
   end
+
+  context 'ensure => absent' do
+    let(:facts) { FACTS }
+    let(:params) {{ :ensure => 'absent' }}
+    it do
+      should compile.with_all_deps
+      should contain_package('opsmatic-cli').with(
+        'ensure' => 'absent')
+    end
+  end
+
 end

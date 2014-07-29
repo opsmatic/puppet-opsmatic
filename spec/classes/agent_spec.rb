@@ -23,14 +23,14 @@ describe 'opsmatic::agent', :type => 'class' do
     end
   end
 
-  context 'token => 1234, credentials => foo:goo' do
+  context 'token => 1234' do
     let(:facts) { FACTS }
     let(:params) {{
-      :token => '1234', :credentials => 'foo:goo'
+      :token => '1234'
     }}
     it do
       should compile.with_all_deps
-      should contain_class('opsmatic::debian_private')
+      should contain_class('opsmatic::debian')
       should contain_package('opsmatic-agent').with(
         'ensure' => 'present')
       should contain_file('/etc/opsmatic-agent.conf').with(
@@ -41,32 +41,10 @@ describe 'opsmatic::agent', :type => 'class' do
     end
   end
 
-  context 'token => 1234, credentials => foo:goo, paths_ignore => [/foo, /bar, /baz]' do
-    let(:facts) { FACTS }
-    let(:params) {{
-      :token => '1234', :credentials => 'foo:goo',
-      :paths_ignore => [ '/foo', '/bar', '/baz' ],
-    }}
-    it do
-      should compile.with_all_deps
-      should contain_file('/etc/opsmatic-agent.conf').with(
-        'content' => /paths_ignore = \[\"\/foo\", \"\/bar\", \"\/baz\"\]/)
-    end
-  end
-
-  context 'token => 1234, credentials => foo:goo, paths_ignore => string should fail' do
-    let(:facts) { FACTS }
-    let(:params) {{
-      :token => '1234', :credentials => 'foo:goo',
-      :paths_ignore => 'string',
-    }}
-    it { expect { should compile.with_all_deps }.to raise_error(/not an Array/) }
-  end
-
   context 'ensure => absent' do
     let(:facts) { FACTS }
     let(:params) {{
-      :ensure => 'absent', :token => '1234', :credentials => 'foo:goo'
+      :ensure => 'absent', :token => '1234'
     }}
     it do
       should compile.with_all_deps

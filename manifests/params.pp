@@ -13,14 +13,14 @@ class opsmatic::params {
   # Default agent state
   $agent_ensure = 'present'
 
+  # Default CLI tool state
+  $cli_ensure = 'present'
+
   # Integration token
   $token = ''
 
   # Paths to ignore by the Opsmatic Gent
   $paths_ignore = []
-
-  # Agent credentials
-  $credentials = ''
 
   # Opsmatic webhooks events endpoint
   $opsmatic_event_http = 'https://api.opsmatic.com/webhooks/events'

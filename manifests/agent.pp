@@ -1,22 +1,15 @@
-# == Class: opsmatic-agent
+# == Class: opsmatic::agent
 #
 # === Required Parameters
 #
 # [*token*]
 #   The Global Install Token
 #
-# [*credentials*]
-#   The credentials to install the Opsmatic agent package
-#
 # === Optional Parameters
 #
 # [*ensure*]
 #   Whether to ensure its installed, or ensure its uninstalled.
 #   (default: present) (options: present/absent)
-#
-# [*paths_ignore*]
-#   An array of paths to ignore (not monitor).
-#   (default: [])
 #
 # === Authors
 #
@@ -25,36 +18,32 @@
 class opsmatic::agent (
   $ensure       = $opsmatic::params::agent_ensure,
   $token        = $opsmatic::params::token,
-  $credentials  = $opsmatic::params::credentials,
-  $paths_ignore = $opsmatic::params::paths_ignore,
 ) inherits opsmatic::params {
 
   if $token == '' {
     fail("Your Opsmatic install token is not defined in ${token}")
   }
 
-  if $credentials == '' {
-    fail("Your Opsmatic credentials are not defined in ${credentials}")
-  }
-
-  validate_array($paths_ignore)
-
+  # Install or uninstall the Opsmatic agent. If $ensure above is
+  # absent, this will purge the agent.
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
-      class {'opsmatic::debian_private':
-        credentials => $credentials,
+      include opsmatic::debian
+      package { 'opsmatic-agent':
+        ensure  => $ensure,
+        require => Apt::Source['opsmatic_debian_repo'],
+      }
+    }
+    'CentOS': {
+      include opsmatic::rhel
+      package { 'opsmatic-agent':
+        ensure  => $ensure,
+        require => Yumrepo['opsmatic_rhel_repo'],
       }
     }
     default: {
-      fail('Opsmatic agent is not supported on this platform')
+      fail('Opsmatic Agent is not supported on this platform')
     }
-  }
-
-  # Install or uninstall the Opsmatic agent. If $ensure above is
-  # absent, this will purge the agent.
-  package { 'opsmatic-agent':
-    ensure  => $ensure,
-    require => Class['opsmatic::debian_private'];
   }
 
   file { '/etc/opsmatic-agent.conf':

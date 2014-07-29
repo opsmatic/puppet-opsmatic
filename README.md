@@ -7,16 +7,17 @@ Opsmatic Puppet Module
 Overview
 --------
 
-This module installs and configures the Opsmatic Puppet Reporter and the Opsmatic Agent.
+This module installs and configures the Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool.
 
 
 Requirements
 ------------
 
-The Opsmatic Puppet Reporter and the Opsmatic Agent are supported on the following platforms:
+The Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool are supported on the following platforms:
 
   * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04, 13.10 and 14.04.
   * Debian: 7.x.
+  * CentOS: 6.x.
 
 
 Usage
@@ -36,17 +37,18 @@ and make sure to set the report setting in your `puppet.conf` to true in order t
 
 After that, the manifest will handle the appropriate platform detection and configuration. The Puppet Reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
 
-To use this module to install Opsmatic Agent you will need to set the variable `$token` and your credentials `$credentials` in
-your puppet configuration:
+To use this module to install the Opsmatic Agent or the Opsmatic CLI tool you will need to set the variable `$token` in your puppet configuration:
 
     class { 'opsmatic::agent':
       token => 'my_integration_token',
-      credentials => 'my_credentials',
     }
 
-You can get these credentials from https://beta.opsmatic.com/docs/agent-installation.
+and to install the Opsmatic CLI tool, simply include the following:
 
-Finally, if you ever want to purge the Opsmatic Agent or the Puppet Reporter from your hosts, use the following:
+    class { 'opsmatic::cli':
+    }
+
+Finally, if you ever want to purge the Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool from any of your hosts, change the variable `$ensure` to the following:
 
     class { 'opsmatic::puppet_reporter':
       ensure => 'absent';
@@ -57,8 +59,7 @@ Attributes
 ----------
 
 * `$token` - this is your integration token.
-* `$credentials` - to the Opsmatic packages repo.
-* `$ensure` - to ensure the Agent or Puppet Reporter is installed or uninstalled.
+* `$ensure` - to ensure the Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool is installed or not.
 
 
 Support
