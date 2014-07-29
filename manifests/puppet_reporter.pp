@@ -1,4 +1,4 @@
-# == Class: opsmatic-puppet_reporter
+# == Class: opsmatic::puppet_reporter
 #
 # === Required Parameters
 #
@@ -24,20 +24,26 @@ class opsmatic::puppet_reporter (
     fail("Your Opsmatic install token is not defined in ${token}")
   }
 
+  # Install or uninstall the Opsmatic Puppet Reporter. If $ensure above is
+  # absent, this will purge the reporter.
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
       include opsmatic::debian
+      package { 'opsmatic-puppet-reporter':
+        ensure  => $ensure,
+        require => Apt::Source['opsmatic_debian_repo'],
+      }
+    }
+    'CentOS': {
+      include opsmatic::rhel
+      package { 'opsmatic-puppet-reporter':
+        ensure  => $ensure,
+        require => Yumrepo['opsmatic_rhel_repo'],
+      }
     }
     default: {
-      fail('Opsmatic Puppet Reporter only supported on Debian and Ubuntu')
+      fail('Opsmatic Puppet reporter is not supported on this platform')
     }
-  }
-
-  # Install or uninstall the Opsmatic Puppet reporter. If $ensure above is
-  # absent, this will purge the reporter.
-  package { 'opsmatic-puppet-reporter':
-    ensure  => $ensure,
-    require => Class['opsmatic::debian'];
   }
 
   # Install or uninstall the upstart job configuration file.
