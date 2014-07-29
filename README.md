@@ -51,7 +51,7 @@ and to install the Opsmatic CLI tool, simply include the following:
 Finally, if you ever want to purge the Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool from any of your hosts, change the variable `$ensure` to the following:
 
     class { 'opsmatic::puppet_reporter':
-      ensure => 'absent';
+      ensure => 'absent',
     }
 
 
@@ -59,7 +59,7 @@ Attributes
 ----------
 
 * `$token` - this is your integration token.
-* `$ensure` - to ensure the Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool is installed or not.
+* `$ensure` - ensure the Opsmatic Puppet Reporter, Opsmatic Agent, or Opsmatic CLI tool is installed or not.
 
 
 Support
