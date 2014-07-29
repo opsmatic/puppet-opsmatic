@@ -8,10 +8,10 @@
 #
 class opsmatic::rhel {
   yumrepo { 'opsmatic_rhel_repo':
-    baseurl  => 'https://packagecloud.io/opsmatic/public/el/',
+    baseurl  => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
     descr    => 'Opsmatic RHEL repository',
     enabled  => '1',
     gpgcheck => '1',
-    gpgkey   => template('opsmatic/D59097AB.key');
+    gpgkey   => 'file://templates/D59097AB.key';
   }
 }
