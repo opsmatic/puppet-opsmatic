@@ -47,7 +47,7 @@ class opsmatic::agent (
   }
 
   file { '/etc/opsmatic-agent.conf':
-    ensure  => $ensure,
+    ensure  => 'present',
     owner   => 'root',
     group   => 'root',
     mode    => '0640',

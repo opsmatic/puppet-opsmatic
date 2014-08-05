@@ -48,7 +48,7 @@ class opsmatic::puppet_reporter (
 
   # Install or uninstall the upstart job configuration file.
   file { '/etc/init/opsmatic-puppet-reporter.conf':
-    ensure  => $ensure,
+    ensure  => 'present',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
