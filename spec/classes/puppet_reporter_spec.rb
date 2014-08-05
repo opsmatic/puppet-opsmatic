@@ -46,7 +46,6 @@ describe 'opsmatic::puppet_reporter', :type => 'class' do
       should contain_package('opsmatic-puppet-reporter').with(
         'ensure' => 'absent')
       should contain_file('/etc/init/opsmatic-puppet-reporter.conf').with(
-        'ensure'  => 'absent',
         'content' => /api.opsmatic.com/)
 
       should_not contain_service('opsmatic-puppet-reporter')
