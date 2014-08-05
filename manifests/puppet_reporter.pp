@@ -59,7 +59,7 @@ class opsmatic::puppet_reporter (
   # the upstart job config doesn't exist anyways so we cannot use a service
   # definition to stop the service. Instead, we call an exec to kill it.
   case $ensure {
-    'present', 'installed': {
+    'present', 'installed', 'latest': {
       service { 'opsmatic-puppet-reporter':
         ensure    => 'running',
         enable    => true,

@@ -58,7 +58,7 @@ class opsmatic::agent (
   # the upstart job config doesn't exist anyways so we cannot use a service
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
-    'present', 'installed': {
+    'present', 'installed', 'latest': {
       # Configure the agent client certs
       exec { 'opsmatic_agent_initial_configuration':
         command => "/usr/bin/config-opsmatic-agent --token=${token}",
