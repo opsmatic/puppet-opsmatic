@@ -46,20 +46,19 @@ class opsmatic::puppet_reporter (
     }
   }
 
-  # Install or uninstall the upstart job configuration file.
-  file { '/etc/init/opsmatic-puppet-reporter.conf':
-    ensure  => 'present',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('opsmatic/puppet_reporter_upstart.erb'),
-  }
-
   # Now, if we are installing the service, turn it on. If we're not, then
   # the upstart job config doesn't exist anyways so we cannot use a service
   # definition to stop the service. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed', 'latest': {
+      file { '/etc/init/opsmatic-puppet-reporter.conf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('opsmatic/puppet_reporter_upstart.erb'),
+      }
+
       service { 'opsmatic-puppet-reporter':
         ensure    => 'running',
         enable    => true,
@@ -72,6 +71,14 @@ class opsmatic::puppet_reporter (
       }
     }
     default: {
+      file { '/etc/init/opsmatic-puppet-reporter.conf':
+        ensure  => 'absent',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('opsmatic/puppet_reporter_upstart.erb'),
+      }
+
       exec { 'kill-opsmatic-puppet-reporter':
         command => 'killall -9 opsmatic-puppet-reporter',
         onlyif  => 'pgrep -f opsmatic-puppet-reporter',

@@ -46,19 +46,19 @@ class opsmatic::agent (
     }
   }
 
-  file { '/etc/opsmatic-agent.conf':
-    ensure  => 'present',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0640',
-    content => template('opsmatic/opsmatic-agent.conf.erb'),
-  }
-
   # Now, if we are installing the agent, turn it on. If we're not, then
   # the upstart job config doesn't exist anyways so we cannot use a service
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed', 'latest': {
+      file { '/etc/opsmatic-agent.conf':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0640',
+        content => template('opsmatic/opsmatic-agent.conf.erb'),
+      }
+
       # Configure the agent client certs
       exec { 'opsmatic_agent_initial_configuration':
         command => "/usr/bin/config-opsmatic-agent --token=${token}",
@@ -82,6 +82,14 @@ class opsmatic::agent (
       }
     }
     default: {
+      file { '/etc/opsmatic-agent.conf':
+        ensure  => 'absent',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0640',
+        content => template('opsmatic/opsmatic-agent.conf.erb'),
+      }
+
       exec { 'kill-opsmatic-agent':
         command => 'killall -9 opsmatic-agent',
         onlyif  => 'pgrep -f opsmatic-agent',
