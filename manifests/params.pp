@@ -24,4 +24,7 @@ class opsmatic::params {
 
   # Opsmatic webhooks events endpoint
   $opsmatic_event_http = 'https://api.opsmatic.com/webhooks/events'
+
+  # Location of the Puppet executable
+  $puppet_bin = ''
 }
