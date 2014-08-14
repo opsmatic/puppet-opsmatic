@@ -38,7 +38,7 @@ and make sure to set the report setting in your `puppet.conf` to true in order t
 After that, the manifest will handle the appropriate platform detection and configuration. The Puppet Reporter will run as a daemon waiting for changes performed by Puppet runs, and reporting the results to Opsmatic.
 
 The Puppet Reporter uses the `puppet` executable command to discover certain configuration values of your infrastructure.
-If the path of the `puppet` executable command is not in your `$PATH`, you will need to set the variable `$puppet_path`
+If the path of the `puppet` executable command is not in your `$PATH`, you will need to set the variable `$puppet_bin`
 in your puppet configuration:
 
     class { 'opsmatic::puppet_reporter':
