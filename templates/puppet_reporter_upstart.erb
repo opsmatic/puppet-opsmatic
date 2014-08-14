@@ -9,7 +9,7 @@ respawn limit 5 60
 limit nofile 65535 65535
 limit core unlimited unlimited
 
-env PUPPETBIN=<%= @puppet_path %>
+env PUPPETBIN=<%= @puppet_bin %>
 
 script
     set -e

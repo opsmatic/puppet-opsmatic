@@ -43,7 +43,7 @@ in your puppet configuration:
 
     class { 'opsmatic::puppet_reporter':
       token => 'my_integration_token',
-      puppet_path => '/usr/bin',
+      puppet_bin => '/usr/bin',
     }
 
 To use this module to install the Opsmatic Agent or the Opsmatic CLI tool you will need to set the variable `$token` in your puppet configuration:
