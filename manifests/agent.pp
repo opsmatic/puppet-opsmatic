@@ -16,8 +16,9 @@
 # Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::agent (
-  $ensure       = $opsmatic::params::agent_ensure,
-  $token        = $opsmatic::params::token,
+  $ensure               = $opsmatic::params::agent_ensure,
+  $token                = $opsmatic::params::token,
+  $files_config_enabled = $opsmatic::params::files_config_enabled,
 ) inherits opsmatic::params {
 
   if $token == '' {

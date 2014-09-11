@@ -19,6 +19,9 @@ class opsmatic::params {
   # Integration token
   $token = ''
 
+  # Enable file watching
+  $files_config_enabled = false
+
   # Paths to ignore by the Opsmatic Gent
   $paths_ignore = []
 
