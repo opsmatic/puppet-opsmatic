@@ -68,7 +68,7 @@ Attributes
 ----------
 
 * `$token` - this is your integration token.
-* `$ensure` - ensure the Opsmatic Puppet Reporter, Opsmatic Agent, or Opsmatic CLI tool is installed or not.
+* `$ensure` - ensure the Opsmatic Puppet Reporter, Opsmatic Agent, or Opsmatic CLI tool is installed or not. Give it the value `latest` to install the latest version available of the package.
 
 
 Support
