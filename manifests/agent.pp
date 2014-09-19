@@ -30,15 +30,37 @@ class opsmatic::agent (
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
       include opsmatic::debian
-      package { 'opsmatic-agent':
-        ensure  => $ensure,
-        require => Apt::Source['opsmatic_debian_repo'],
+      if $ensure == 'latest' {
+        package { 'opsmatic-agent':
+          ensure  => $ensure,
+          notify  => Exec['opsmatic_agent_initial_configuration'],
+          require => [
+            Exec['apt-get update'],
+            Apt::Source['opsmatic_debian_repo'],
+          ];
+        }
+      }
+      elsif $ensure == 'absent' {
+        package { 'opsmatic-agent':
+          ensure  => $ensure,
+        }
+      }
+      else {
+        package { 'opsmatic-agent':
+          ensure  => $ensure,
+          notify  => [
+            Exec['opsmatic_agent_initial_configuration'],
+            Service['opsmatic-agent'],
+          ],
+          require => Apt::Source['opsmatic_debian_repo'],
+        }
       }
     }
     'CentOS': {
       include opsmatic::rhel
       package { 'opsmatic-agent':
         ensure  => $ensure,
+        notify  => Exec['opsmatic_agent_initial_configuration'],
         require => Yumrepo['opsmatic_rhel_repo'],
       }
     }
@@ -78,8 +100,13 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => File['/etc/opsmatic-agent.conf'],
-        require   => Package['opsmatic-agent'];
+        subscribe => [
+          File['/etc/opsmatic-agent.conf'],
+          Package['opsmatic-agent'],
+        ],
+        require   => [
+          Package['opsmatic-agent'],
+        ],
       }
     }
     default: {

@@ -29,15 +29,34 @@ class opsmatic::puppet_reporter (
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
       include opsmatic::debian
-      package { 'opsmatic-puppet-reporter':
-        ensure  => $ensure,
-        require => Apt::Source['opsmatic_debian_repo'],
+      if $ensure == 'latest' {
+        package { 'opsmatic-puppet-reporter':
+          ensure  => $ensure,
+          notify  => Service['opsmatic-puppet-reporter'],
+          require => [
+            Exec['apt-get update'],
+            Apt::Source['opsmatic_debian_repo'],
+          ];
+        }
+      }
+      elsif $ensure == 'absent' {
+        package { 'opsmatic-puppet-reporter':
+          ensure  => $ensure,
+        }
+      }
+      else {
+        package { 'opsmatic-puppet-reporter':
+          ensure  => $ensure,
+          notify  => Service['opsmatic-puppet-reporter'],
+          require => Apt::Source['opsmatic_debian_repo'],
+        }
       }
     }
     'CentOS': {
       include opsmatic::rhel
       package { 'opsmatic-puppet-reporter':
         ensure  => $ensure,
+        notify  => Service['opsmatic-puppet-reporter'],
         require => Yumrepo['opsmatic_rhel_repo'],
       }
     }
@@ -63,7 +82,10 @@ class opsmatic::puppet_reporter (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
+        subscribe => [
+          File['/etc/init/opsmatic-puppet-reporter.conf'],
+          Package['opsmatic-puppet-reporter'],
+        ],
         require   => [
           Package['opsmatic-puppet-reporter'],
           File['/etc/init/opsmatic-puppet-reporter.conf'],
