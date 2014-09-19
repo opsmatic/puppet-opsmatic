@@ -100,13 +100,8 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => [
-          File['/etc/opsmatic-agent.conf'],
-          Package['opsmatic-agent'],
-        ],
-        require   => [
-          Package['opsmatic-agent'],
-        ],
+        subscribe => File['/etc/opsmatic-agent.conf'],
+        require   => Package['opsmatic-agent'],
       }
     }
     default: {

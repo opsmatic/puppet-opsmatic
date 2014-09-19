@@ -82,14 +82,8 @@ class opsmatic::puppet_reporter (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => [
-          File['/etc/init/opsmatic-puppet-reporter.conf'],
-          Package['opsmatic-puppet-reporter'],
-        ],
-        require   => [
-          Package['opsmatic-puppet-reporter'],
-          File['/etc/init/opsmatic-puppet-reporter.conf'],
-        ];
+        subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
+        require   => Package['opsmatic-puppet-reporter'],
       }
     }
     default: {
