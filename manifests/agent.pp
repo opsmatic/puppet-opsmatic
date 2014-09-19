@@ -33,7 +33,10 @@ class opsmatic::agent (
       if $ensure == 'latest' {
         package { 'opsmatic-agent':
           ensure  => $ensure,
-          notify  => Exec['opsmatic_agent_initial_configuration'],
+          notify  => [
+            Exec['opsmatic_agent_initial_configuration'],
+            Service['opsmatic-agent'],
+          ],
           require => [
             Exec['apt-get update'],
             Apt::Source['opsmatic_debian_repo'],
@@ -60,7 +63,10 @@ class opsmatic::agent (
       include opsmatic::rhel
       package { 'opsmatic-agent':
         ensure  => $ensure,
-        notify  => Exec['opsmatic_agent_initial_configuration'],
+        notify  => [
+          Exec['opsmatic_agent_initial_configuration'],
+          Service['opsmatic-agent'],
+        ],
         require => Yumrepo['opsmatic_rhel_repo'],
       }
     }
