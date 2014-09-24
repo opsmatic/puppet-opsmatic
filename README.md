@@ -16,7 +16,6 @@ Requirements
 The Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool are supported on the following platforms:
 
   * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04, 13.10 and 14.04.
-  * Debian: 7.x.
   * CentOS: 6.x.
 
 
