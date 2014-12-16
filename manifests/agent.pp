@@ -52,20 +52,13 @@ class opsmatic::agent (
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed', 'latest': {
+      include opsmatic::global
       file { '/etc/opsmatic-agent.conf':
         ensure  => 'present',
         owner   => 'root',
         group   => 'root',
         mode    => '0640',
         content => template('opsmatic/opsmatic-agent.conf.erb'),
-      }
-
-      file { '/etc/default/opsmatic-global':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0640',
-        content => template('opsmatic/opsmatic-global.erb'),
       }
 
       # Configure the agent client certs

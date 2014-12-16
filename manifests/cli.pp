@@ -23,6 +23,7 @@ class opsmatic::cli (
   # absent, this will purge the tool.
   case $::operatingsystem {
     'Debian', 'Ubuntu': {
+      include opsmatic::global
       include opsmatic::debian
       package { 'opsmatic-cli':
         ensure  => $ensure,
@@ -31,6 +32,7 @@ class opsmatic::cli (
       }
     }
     'CentOS': {
+      include opsmatic::global
       include opsmatic::rhel
       package { 'opsmatic-cli':
         ensure  => $ensure,
