@@ -60,6 +60,14 @@ class opsmatic::agent (
         content => template('opsmatic/opsmatic-agent.conf.erb'),
       }
 
+      file { '/etc/default/opsmatic-global':
+        ensure  => 'present',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0640',
+        content => template('opsmatic/opsmatic-global.erb'),
+      }
+
       # Configure the agent client certs
       exec { 'opsmatic_agent_initial_configuration':
         command => "/usr/bin/config-opsmatic-agent --token=${token}",
@@ -78,7 +86,7 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => File['/etc/opsmatic-agent.conf'],
+        subscribe => [ File['/etc/opsmatic-agent.conf'], File['/etc/default/opsmatic-global'] ],
         require   => Package['opsmatic-agent'];
       }
     }
@@ -89,6 +97,14 @@ class opsmatic::agent (
         group   => 'root',
         mode    => '0640',
         content => template('opsmatic/opsmatic-agent.conf.erb'),
+      }
+
+      file { '/etc/default/opsmatic-global':
+        ensure  => 'absent',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0640',
+        content => template('opsmatic/opsmatic-global.erb'),
       }
 
       exec { 'kill-opsmatic-agent':

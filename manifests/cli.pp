@@ -27,6 +27,7 @@ class opsmatic::cli (
       package { 'opsmatic-cli':
         ensure  => $ensure,
         require => Apt::Source['opsmatic_debian_repo'],
+        subscribe => File['/etc/default/opsmatic-global'],
       }
     }
     'CentOS': {
@@ -34,6 +35,7 @@ class opsmatic::cli (
       package { 'opsmatic-cli':
         ensure  => $ensure,
         require => Yumrepo['opsmatic_rhel_repo'],
+        subscribe => File['/etc/default/opsmatic-global'],
       }
     }
     default: {
