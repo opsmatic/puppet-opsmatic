@@ -52,6 +52,7 @@ class opsmatic::agent (
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed', 'latest': {
+      include opsmatic::global
       file { '/etc/opsmatic-agent.conf':
         ensure  => 'present',
         owner   => 'root',
@@ -78,7 +79,7 @@ class opsmatic::agent (
         ensure    => 'running',
         enable    => true,
         provider  => upstart,
-        subscribe => File['/etc/opsmatic-agent.conf'],
+        subscribe => [ File['/etc/opsmatic-agent.conf'], File['/etc/default/opsmatic-global'] ],
         require   => Package['opsmatic-agent'];
       }
     }
@@ -89,6 +90,14 @@ class opsmatic::agent (
         group   => 'root',
         mode    => '0640',
         content => template('opsmatic/opsmatic-agent.conf.erb'),
+      }
+
+      file { '/etc/default/opsmatic-global':
+        ensure  => 'absent',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0640',
+        content => template('opsmatic/opsmatic-global.erb'),
       }
 
       exec { 'kill-opsmatic-agent':
