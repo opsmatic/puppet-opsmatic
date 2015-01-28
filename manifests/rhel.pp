@@ -11,7 +11,7 @@ class opsmatic::rhel {
     baseurl  => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
     descr    => 'Opsmatic RHEL repository',
     enabled  => '1',
-    gpgcheck => '1',
+    gpgcheck => '0',
     gpgkey   => 'file://templates/D59097AB.key';
   }
 }
