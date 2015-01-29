@@ -111,6 +111,38 @@ class opsmatic::agent (
             require => Package['opsmatic-agent'];
           }
         }
+        'Centos': {
+          case $::operatingsystemmajrelease {
+            '6': {
+              # Configure the agent client certs
+              exec { 'opsmatic_agent_initial_configuration':
+                command => "/usr/bin/config-opsmatic-agent --token=${token}",
+                onlyif  => [
+                  'test ! -f /var/db/opsmatic-agent/identity/host_id',
+                  'test ! -f /var/db/opsmatic-agent/identity/client-key.key',
+                  'test ! -f /var/db/opsmatic-agent/identity/client-pem.pem',
+                ],
+                path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+                notify  => Service['opsmatic-agent'],
+                require => Package['opsmatic-agent'];
+              }
+            }
+            '7': {
+              # Configure the agent client certs
+              exec { 'opsmatic_agent_initial_configuration':
+                command => "/usr/bin/config-opsmatic-agent --token=${token}",
+                onlyif  => [
+                  'test ! -f /var/db/opsmatic-agent/identity/host_id',
+                  'test ! -f /var/db/opsmatic-agent/identity/client-key.key',
+                  'test ! -f /var/db/opsmatic-agent/identity/client-pem.pem',
+                ],
+                path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
+                notify  => Service['opsmatic-agent'],
+                require => Package['opsmatic-agent-systemd'];
+              }
+            }
+          }
+        }
       }
 
       case $::operatingsystem {

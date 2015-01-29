@@ -18,8 +18,15 @@ class opsmatic::rhel {
       }
     }
     '7': {
+      yumrepo { 'opsmatic_rhel_repo_6':
+        baseurl  => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
+        descr    => 'Opsmatic RHEL repository',
+        enabled  => '1',
+        gpgcheck => '0',
+        gpgkey   => 'file://templates/D59097AB.key';
+      }
       yumrepo { 'opsmatic_rhel_repo':
-        baseurl  => 'https://packagecloud.io/opsmatic/public/el/7/$basearch',
+        baseurl  => 'http://rpm.lab.opsmatic.com:3435/Opsmatic/7/$basearch',
         descr    => 'Opsmatic RHEL repository',
         enabled  => '1',
         gpgcheck => '0',
