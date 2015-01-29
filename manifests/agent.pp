@@ -48,9 +48,19 @@ class opsmatic::agent (
     }
     'CentOS': {
       include opsmatic::rhel
-      package { 'opsmatic-agent':
-        ensure  => $ensure,
-        require => Yumrepo['opsmatic_rhel_repo'],
+      case $::operatingsystemmajrelease {
+        '6': {
+          package { 'opsmatic-agent':
+            ensure  => $ensure,
+            require => Yumrepo['opsmatic_rhel_repo'],
+          }
+        }
+        '7': {
+          package { 'opsmatic-agent-systemd':
+            ensure  => $ensure,
+            require => Yumrepo['opsmatic_rhel_repo'],
+          }
+        }
       }
     }
     default: {
@@ -155,7 +165,7 @@ class opsmatic::agent (
                 stop => '/bin/systemctl stop opsmatic-agent',
                 status => '/sbin/initctl status opsmatic-agent | grep running',
                 subscribe => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
-                require => Package['opsmatic-agent'];
+                require => Package['opsmatic-agent-systemd'];
               }
             }
           }
