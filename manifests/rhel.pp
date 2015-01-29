@@ -6,9 +6,9 @@
 #
 # Opsmatic Inc. (support@opsmatic.com)
 #
-case $::operatingsystemmajrelease {
-  '6': {
-    class opsmatic::rhel {
+class opsmatic::rhel {
+  case $::operatingsystemmajrelease {
+    '6': {
       yumrepo { 'opsmatic_rhel_repo':
         baseurl  => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
         descr    => 'Opsmatic RHEL repository',
@@ -17,9 +17,7 @@ case $::operatingsystemmajrelease {
         gpgkey   => 'file://templates/D59097AB.key';
       }
     }
-  }
-  '7': {
-    class opsmatic::rhel {
+    '7': {
       yumrepo { 'opsmatic_rhel_repo':
         baseurl  => 'https://packagecloud.io/opsmatic/public/el/7/$basearch',
         descr    => 'Opsmatic RHEL repository',
