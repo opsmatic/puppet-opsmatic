@@ -29,10 +29,6 @@ class opsmatic::puppet_reporter (
   case $::operatingsystem {
     'Debian': {
       include opsmatic::debian
-      package { 'apt-transport-https':
-        install_options => [ '--force-yes' ],
-        ensure  => $ensure
-      }
       package { 'opsmatic-puppet-reporter-sysv':
         ensure  => $ensure,
         require => Apt::Source['opsmatic_debian_repo']
@@ -57,7 +53,7 @@ class opsmatic::puppet_reporter (
         '7': {
           package { 'opsmatic-puppet-reporter-systemd':
             ensure  => $ensure,
-            require => Yumrepo['opsmatic_rhel_repo'],
+            require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
       }
@@ -83,7 +79,6 @@ class opsmatic::puppet_reporter (
           }
           service { 'opsmatic-puppet-reporter':
             ensure    => 'running',
-            enable    => true,
             hasrestart => true,
             hasstatus => true,
             restart => '/sbin/initctl restart opsmatic-puppet-reporter',
@@ -109,7 +104,6 @@ class opsmatic::puppet_reporter (
               }
               service { 'opsmatic-puppet-reporter':
                   ensure    => 'running',
-                  enable    => true,
                   hasstatus => true,
                   restart => '/sbin/initctl restart opsmatic-puppet-reporter',
                   start => '/sbin/initctl start opsmatic-puppet-reporter',
@@ -131,7 +125,6 @@ class opsmatic::puppet_reporter (
     'Debian': {
       service { 'opsmatic-puppet-reporter':
           ensure    => 'running',
-          enable    => true,
           hasrestart => true,
           hasstatus => true,
           restart => '/etc/init.d/opsmatic-puppet-reporter restart',
@@ -148,7 +141,6 @@ class opsmatic::puppet_reporter (
         '7': {
           service { 'opsmatic-puppet-reporter':
               ensure    => 'running',
-              enable    => true,
               hasstatus => true,
               restart => '/bin/systemctl restart opsmatic-puppet-reporter',
               start => '/bin/systemctl start opsmatic-puppet-reporter',
@@ -162,14 +154,6 @@ class opsmatic::puppet_reporter (
       }
     }
     default: {
-      file { '/etc/init/opsmatic-puppet-reporter.conf':
-        ensure  => 'absent',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('opsmatic/puppet_reporter_upstart.erb'),
-      }
-
       exec { 'kill-opsmatic-puppet-reporter':
         command => 'killall -9 opsmatic-puppet-reporter',
         onlyif  => 'pgrep -f opsmatic-puppet-reporter',

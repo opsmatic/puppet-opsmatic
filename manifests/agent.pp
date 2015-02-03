@@ -58,7 +58,7 @@ class opsmatic::agent (
         '7': {
           package { 'opsmatic-agent-systemd':
             ensure  => $ensure,
-            require => Yumrepo['opsmatic_rhel_repo'],
+            require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
       }
