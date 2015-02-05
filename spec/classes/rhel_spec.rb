@@ -17,8 +17,9 @@ describe 'opsmatic::rhel', :type => 'class' do
       should contain_yumrepo('opsmatic_rhel_repo').with(
         'enabled'  => '1',
         'gpgcheck' => '1',
+        'repo_gpgcheck' => '1',
         'baseurl' => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
-        'gpgkey' => 'file:///etc/pki/rpm-gpg/9DAB4A7C.key')
+        'gpgkey' => 'file:///etc/pki/rpm-gpg/D59097AB_packagecloud-repo.key')
     end
   end
 end
