@@ -6,6 +6,7 @@ REDHAT_FACTS = {
   :operatingsystem => 'CentOS',
   :lsbdistid => 'CentOS',
   :lsbdistrelease => '6',
+  :operatingsystemmajrelease => '6',
   :kernel => 'linux',
 }
 
@@ -17,7 +18,7 @@ describe 'opsmatic::rhel', :type => 'class' do
         'enabled'  => '1',
         'gpgcheck' => '1',
         'baseurl' => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
-        'gpgkey' => 'file://templates/D59097AB.key')
+        'gpgkey' => 'file:///etc/pki/rpm-gpg/9DAB4A7C.key')
     end
   end
 end
