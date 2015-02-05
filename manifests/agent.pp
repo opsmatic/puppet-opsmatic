@@ -157,56 +157,56 @@ class opsmatic::agent (
       case $::operatingsystem {
         'Debian': {
           service { 'opsmatic-agent':
-            ensure => 'running',
+            ensure     => 'running',
             hasrestart => true,
-            hasstatus => true,
-            restart => '/etc/init.d/opsmatic-agent restart',
-            start => '/etc/init.d/opsmatic-agent start',
-            stop => '/etc/init.d/opsmatic-agent stop',
-            status => '/etc/init.d/opsmatic-agent status | grep running',
-            subscribe => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
-            require => Package['opsmatic-agent-sysv'];
+            hasstatus  => true,
+            restart    => '/etc/init.d/opsmatic-agent restart',
+            start      => '/etc/init.d/opsmatic-agent start',
+            stop       => '/etc/init.d/opsmatic-agent stop',
+            status     => '/etc/init.d/opsmatic-agent status | grep running',
+            subscribe  => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
+            require    => Package['opsmatic-agent-sysv'];
           }
         }
         'Ubuntu': {
           service { 'opsmatic-agent':
-            ensure => 'running',
+            ensure     => 'running',
             hasrestart => true,
-            hasstatus => true,
-            restart => '/sbin/initctl restart opsmatic-agent',
-            start => '/sbin/initctl start opsmatic-agent',
-            stop => '/sbin/initctl stop opsmatic-agent',
-            status => '/sbin/initctl status opsmatic-agent | grep running',
-            subscribe => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
-            require => Package['opsmatic-agent'];
+            hasstatus  => true,
+            restart    => '/sbin/initctl restart opsmatic-agent',
+            start      => '/sbin/initctl start opsmatic-agent',
+            stop       => '/sbin/initctl stop opsmatic-agent',
+            status     => '/sbin/initctl status opsmatic-agent | grep running',
+            subscribe  => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
+            require    => Package['opsmatic-agent'];
           }
         }
         'CentOS': {
           case $::operatingsystemmajrelease {
             '6': {
               service { 'opsmatic-agent':
-                ensure => 'running',
+                ensure     => 'running',
                 hasrestart => true,
-                hasstatus => true,
-                restart => '/sbin/initctl restart opsmatic-agent',
-                start => '/sbin/initctl start opsmatic-agent',
-                stop => '/sbin/initctl stop opsmatic-agent',
-                status => '/sbin/initctl status opsmatic-agent | grep running',
-                subscribe => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
-                require => Package['opsmatic-agent'];
+                hasstatus  => true,
+                restart    => '/sbin/initctl restart opsmatic-agent',
+                start      => '/sbin/initctl start opsmatic-agent',
+                stop       => '/sbin/initctl stop opsmatic-agent',
+                status     => '/sbin/initctl status opsmatic-agent | grep running',
+                subscribe  => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
+                require    => Package['opsmatic-agent'];
               }
             }
             '7': {
               service { 'opsmatic-agent':
-                ensure => 'running',
+                ensure     => 'running',
                 hasrestart => true,
-                hasstatus => true,
-                restart => '/bin/systemctl restart opsmatic-agent',
-                start => '/bin/systemctl start opsmatic-agent',
-                stop => '/bin/systemctl stop opsmatic-agent',
-                status => '/sbin/initctl status opsmatic-agent | grep running',
-                subscribe => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
-                require => Package['opsmatic-agent-systemd'];
+                hasstatus  => true,
+                restart    => '/bin/systemctl restart opsmatic-agent',
+                start      => '/bin/systemctl start opsmatic-agent',
+                stop       => '/bin/systemctl stop opsmatic-agent',
+                status     => '/sbin/initctl status opsmatic-agent | grep running',
+                subscribe  => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
+                require    => Package['opsmatic-agent-systemd'];
               }
             }
             default: {

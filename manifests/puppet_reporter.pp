@@ -81,15 +81,15 @@ class opsmatic::puppet_reporter (
             content => template('opsmatic/puppet_reporter_upstart.erb'),
           }
           service { 'opsmatic-puppet-reporter':
-            ensure    => 'running',
+            ensure     => 'running',
             hasrestart => true,
-            hasstatus => true,
-            restart => '/sbin/initctl restart opsmatic-puppet-reporter',
-            start => '/sbin/initctl start opsmatic-puppet-reporter',
-            stop => '/sbin/initctl stop opsmatic-puppet-reporter',
-            status => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
-            subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
-            require   => [
+            hasstatus  => true,
+            restart    => '/sbin/initctl restart opsmatic-puppet-reporter',
+            start      => '/sbin/initctl start opsmatic-puppet-reporter',
+            stop       => '/sbin/initctl stop opsmatic-puppet-reporter',
+            status     => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
+            subscribe  => File['/etc/init/opsmatic-puppet-reporter.conf'],
+            require    => [
               Package['opsmatic-puppet-reporter'],
               File['/etc/init/opsmatic-puppet-reporter.conf'],
             ];
@@ -97,14 +97,14 @@ class opsmatic::puppet_reporter (
         }
         'Debian': {
           service { 'opsmatic-puppet-reporter':
-            ensure    => 'running',
+            ensure     => 'running',
             hasrestart => true,
-            hasstatus => true,
-            restart => '/etc/init.d/opsmatic-puppet-reporter restart',
-            start => '/etc/init.d/opsmatic-puppet-reporter start',
-            stop => '/etc/init.d/opsmatic-puppet-reporter stop',
-            status => '/etc/init.d/opsmatic-puppet-reporter status | grep running',
-            require   => [
+            hasstatus  => true,
+            restart    => '/etc/init.d/opsmatic-puppet-reporter restart',
+            start      => '/etc/init.d/opsmatic-puppet-reporter start',
+            stop       => '/etc/init.d/opsmatic-puppet-reporter stop',
+            status     => '/etc/init.d/opsmatic-puppet-reporter status | grep running',
+            require    => [
               Package['opsmatic-puppet-reporter-sysv']
             ];
           }
@@ -122,10 +122,10 @@ class opsmatic::puppet_reporter (
               service { 'opsmatic-puppet-reporter':
                   ensure    => 'running',
                   hasstatus => true,
-                  restart => '/sbin/initctl restart opsmatic-puppet-reporter',
-                  start => '/sbin/initctl start opsmatic-puppet-reporter',
-                  stop => '/sbin/initctl stop opsmatic-puppet-reporter',
-                  status => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
+                  restart   => '/sbin/initctl restart opsmatic-puppet-reporter',
+                  start     => '/sbin/initctl start opsmatic-puppet-reporter',
+                  stop      => '/sbin/initctl stop opsmatic-puppet-reporter',
+                  status    => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
                   subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
                   require   => [
                     Package['opsmatic-puppet-reporter'],
@@ -137,10 +137,10 @@ class opsmatic::puppet_reporter (
               service { 'opsmatic-puppet-reporter':
                   ensure    => 'running',
                   hasstatus => true,
-                  restart => '/bin/systemctl restart opsmatic-puppet-reporter',
-                  start => '/bin/systemctl start opsmatic-puppet-reporter',
-                  stop => '/bin/systemctl stop opsmatic-puppet-reporter',
-                  status => '/bin/systemctl status opsmatic-puppet-reporter | grep running',
+                  restart   => '/bin/systemctl restart opsmatic-puppet-reporter',
+                  start     => '/bin/systemctl start opsmatic-puppet-reporter',
+                  stop      => '/bin/systemctl stop opsmatic-puppet-reporter',
+                  status    => '/bin/systemctl status opsmatic-puppet-reporter | grep running',
                   require   => [
                     Package['opsmatic-puppet-reporter-systemd']
                   ];
