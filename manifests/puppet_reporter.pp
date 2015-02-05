@@ -56,6 +56,9 @@ class opsmatic::puppet_reporter (
             require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
+        default: {
+          fail('Opsmatic Puppet Reporter is not supported on this platform')
+        }
       }
     }
     default: {
@@ -92,6 +95,20 @@ class opsmatic::puppet_reporter (
             ];
           }
         }
+        'Debian': {
+          service { 'opsmatic-puppet-reporter':
+            ensure    => 'running',
+            hasrestart => true,
+            hasstatus => true,
+            restart => '/etc/init.d/opsmatic-puppet-reporter restart',
+            start => '/etc/init.d/opsmatic-puppet-reporter start',
+            stop => '/etc/init.d/opsmatic-puppet-reporter stop',
+            status => '/etc/init.d/opsmatic-puppet-reporter status | grep running',
+            require   => [
+              Package['opsmatic-puppet-reporter-sysv']
+            ];
+          }
+        }
         'Centos': {
           case $::operatingsystemmajrelease {
             '6': {
@@ -116,39 +133,22 @@ class opsmatic::puppet_reporter (
                   ];
               }
             }
-          }
-        }
-      }
-    }
-  }
-  case $::operatingsystem {
-    'Debian': {
-      service { 'opsmatic-puppet-reporter':
-          ensure    => 'running',
-          hasrestart => true,
-          hasstatus => true,
-          restart => '/etc/init.d/opsmatic-puppet-reporter restart',
-          start => '/etc/init.d/opsmatic-puppet-reporter start',
-          stop => '/etc/init.d/opsmatic-puppet-reporter stop',
-          status => '/etc/init.d/opsmatic-puppet-reporter status | grep running',
-          require   => [
-            Package['opsmatic-puppet-reporter-sysv']
-          ];
-      }
-    }
-    'Centos': {
-      case $::operatingsystemmajrelease {
-        '7': {
-          service { 'opsmatic-puppet-reporter':
-              ensure    => 'running',
-              hasstatus => true,
-              restart => '/bin/systemctl restart opsmatic-puppet-reporter',
-              start => '/bin/systemctl start opsmatic-puppet-reporter',
-              stop => '/bin/systemctl stop opsmatic-puppet-reporter',
-              status => '/bin/systemctl status opsmatic-puppet-reporter | grep running',
-              require   => [
-                Package['opsmatic-puppet-reporter-systemd']
-              ];
+            '7': {
+              service { 'opsmatic-puppet-reporter':
+                  ensure    => 'running',
+                  hasstatus => true,
+                  restart => '/bin/systemctl restart opsmatic-puppet-reporter',
+                  start => '/bin/systemctl start opsmatic-puppet-reporter',
+                  stop => '/bin/systemctl stop opsmatic-puppet-reporter',
+                  status => '/bin/systemctl status opsmatic-puppet-reporter | grep running',
+                  require   => [
+                    Package['opsmatic-puppet-reporter-systemd']
+                  ];
+              }
+            }
+            default: {
+              fail('Opsmatic Puppet Reporter is not supported on this platform')
+            }
           }
         }
       }

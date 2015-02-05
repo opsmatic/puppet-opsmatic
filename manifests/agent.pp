@@ -31,8 +31,8 @@ class opsmatic::agent (
     'Debian': {
       include opsmatic::debian
       package { 'apt-transport-https':
+        ensure          => $ensure,
         install_options => [ '--force-yes' ],
-        ensure  => $ensure
       }
       package { 'opsmatic-agent-sysv':
         ensure  => $ensure,
@@ -60,6 +60,9 @@ class opsmatic::agent (
             ensure  => $ensure,
             require => Yumrepo['opsmatic_rhel7_repo'],
           }
+        }
+        default: {
+          fail('Opsmatic Agent is not supported on this platform')
         }
       }
     }
@@ -141,13 +144,19 @@ class opsmatic::agent (
                 require => Package['opsmatic-agent-systemd'];
               }
             }
+            default: {
+              fail('Opsmatic Agent is not supported on this platform')
+            }
           }
+        }
+        default: {
+          fail('Opsmatic Agent is not supported on this platform')
         }
       }
 
       case $::operatingsystem {
         'Debian': {
-          service { 'opsmatic-agent': 
+          service { 'opsmatic-agent':
             ensure => 'running',
             hasrestart => true,
             hasstatus => true,
@@ -160,7 +169,7 @@ class opsmatic::agent (
           }
         }
         'Ubuntu': {
-          service { 'opsmatic-agent': 
+          service { 'opsmatic-agent':
             ensure => 'running',
             hasrestart => true,
             hasstatus => true,
@@ -175,7 +184,7 @@ class opsmatic::agent (
         'CentOS': {
           case $::operatingsystemmajrelease {
             '6': {
-              service { 'opsmatic-agent': 
+              service { 'opsmatic-agent':
                 ensure => 'running',
                 hasrestart => true,
                 hasstatus => true,
@@ -188,7 +197,7 @@ class opsmatic::agent (
               }
             }
             '7': {
-              service { 'opsmatic-agent': 
+              service { 'opsmatic-agent':
                 ensure => 'running',
                 hasrestart => true,
                 hasstatus => true,
@@ -199,6 +208,9 @@ class opsmatic::agent (
                 subscribe => [ File['/etc/opsmatic-agent.conf'], File[ '/etc/default/opsmatic-global'] ],
                 require => Package['opsmatic-agent-systemd'];
               }
+            }
+            default: {
+              fail('Opsmatic Agent is not supported on this platform')
             }
           }
         }

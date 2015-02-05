@@ -15,9 +15,9 @@ class opsmatic::rhel {
     content => template('opsmatic/9DAB4A7C.key'),
   }
   exec { 'add GPG key':
-    command => "rpm --import /etc/pki/rpm-gpg/9DAB4A7C.key",
+    command => 'rpm --import /etc/pki/rpm-gpg/9DAB4A7C.key',
     path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-    require   => File['/etc/pki/rpm-gpg/9DAB4A7C.key']
+    require => File['/etc/pki/rpm-gpg/9DAB4A7C.key']
   }
   case $::operatingsystemmajrelease {
     '6': {
@@ -45,6 +45,9 @@ class opsmatic::rhel {
         gpgcheck => '1',
         gpgkey   => 'file:///etc/pki/rpm-gpg/9DAB4A7C.key'
       }
+    }
+    default: {
+      fail('Opsmatic Puppet Reporter is not supported on this platform')
     }
   }
 }
