@@ -25,6 +25,9 @@ class opsmatic::params {
   # Paths to ignore by the Opsmatic Gent
   $paths_ignore = []
 
+  # What groups the agent should be a member of in list format
+  $groups = []
+
   # Opsmatic webhooks events endpoint
   $opsmatic_event_http = 'https://api.opsmatic.com/webhooks/events'
 
