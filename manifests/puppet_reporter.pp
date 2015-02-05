@@ -27,18 +27,38 @@ class opsmatic::puppet_reporter (
   # Install or uninstall the Opsmatic Puppet Reporter. If $ensure above is
   # absent, this will purge the reporter.
   case $::operatingsystem {
-    'Debian', 'Ubuntu': {
+    'Debian': {
+      include opsmatic::debian
+      package { 'opsmatic-puppet-reporter-sysv':
+        ensure  => $ensure,
+        require => Apt::Source['opsmatic_debian_repo']
+      }
+    }
+    'Ubuntu': {
       include opsmatic::debian
       package { 'opsmatic-puppet-reporter':
         ensure  => $ensure,
-        require => Apt::Source['opsmatic_debian_repo'],
+        require => Apt::Source['opsmatic_debian_repo']
       }
     }
     'CentOS': {
       include opsmatic::rhel
-      package { 'opsmatic-puppet-reporter':
-        ensure  => $ensure,
-        require => Yumrepo['opsmatic_rhel_repo'],
+      case $::operatingsystemmajrelease {
+        '6': {
+          package { 'opsmatic-puppet-reporter':
+            ensure  => $ensure,
+            require => Yumrepo['opsmatic_rhel_repo'],
+          }
+        }
+        '7': {
+          package { 'opsmatic-puppet-reporter-systemd':
+            ensure  => $ensure,
+            require => Yumrepo['opsmatic_rhel7_repo'],
+          }
+        }
+        default: {
+          fail('Opsmatic Puppet Reporter is not supported on this platform')
+        }
       }
     }
     default: {
@@ -51,34 +71,89 @@ class opsmatic::puppet_reporter (
   # definition to stop the service. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed', 'latest': {
-      file { '/etc/init/opsmatic-puppet-reporter.conf':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('opsmatic/puppet_reporter_upstart.erb'),
-      }
-
-      service { 'opsmatic-puppet-reporter':
-        ensure    => 'running',
-        enable    => true,
-        provider  => upstart,
-        subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
-        require   => [
-          Package['opsmatic-puppet-reporter'],
-          File['/etc/init/opsmatic-puppet-reporter.conf'],
-        ];
+      case $::operatingsystem {
+        'Ubuntu': {
+          file { '/etc/init/opsmatic-puppet-reporter.conf':
+            ensure  => 'present',
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            content => template('opsmatic/puppet_reporter_upstart.erb'),
+          }
+          service { 'opsmatic-puppet-reporter':
+            ensure     => 'running',
+            hasrestart => true,
+            hasstatus  => true,
+            restart    => '/sbin/initctl restart opsmatic-puppet-reporter',
+            start      => '/sbin/initctl start opsmatic-puppet-reporter',
+            stop       => '/sbin/initctl stop opsmatic-puppet-reporter',
+            status     => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
+            subscribe  => File['/etc/init/opsmatic-puppet-reporter.conf'],
+            require    => [
+              Package['opsmatic-puppet-reporter'],
+              File['/etc/init/opsmatic-puppet-reporter.conf'],
+            ];
+          }
+        }
+        'Debian': {
+          service { 'opsmatic-puppet-reporter':
+            ensure     => 'running',
+            hasrestart => true,
+            hasstatus  => true,
+            restart    => '/etc/init.d/opsmatic-puppet-reporter restart',
+            start      => '/etc/init.d/opsmatic-puppet-reporter start',
+            stop       => '/etc/init.d/opsmatic-puppet-reporter stop',
+            status     => '/etc/init.d/opsmatic-puppet-reporter status | grep running',
+            require    => [
+              Package['opsmatic-puppet-reporter-sysv']
+            ];
+          }
+        }
+        'Centos': {
+          case $::operatingsystemmajrelease {
+            '6': {
+              file { '/etc/init/opsmatic-puppet-reporter.conf':
+                ensure  => 'present',
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => template('opsmatic/puppet_reporter_upstart.erb'),
+              }
+              service { 'opsmatic-puppet-reporter':
+                  ensure    => 'running',
+                  hasstatus => true,
+                  restart   => '/sbin/initctl restart opsmatic-puppet-reporter',
+                  start     => '/sbin/initctl start opsmatic-puppet-reporter',
+                  stop      => '/sbin/initctl stop opsmatic-puppet-reporter',
+                  status    => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
+                  subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
+                  require   => [
+                    Package['opsmatic-puppet-reporter'],
+                    File['/etc/init/opsmatic-puppet-reporter.conf'],
+                  ];
+              }
+            }
+            '7': {
+              service { 'opsmatic-puppet-reporter':
+                  ensure    => 'running',
+                  hasstatus => true,
+                  restart   => '/bin/systemctl restart opsmatic-puppet-reporter',
+                  start     => '/bin/systemctl start opsmatic-puppet-reporter',
+                  stop      => '/bin/systemctl stop opsmatic-puppet-reporter',
+                  status    => '/bin/systemctl status opsmatic-puppet-reporter | grep running',
+                  require   => [
+                    Package['opsmatic-puppet-reporter-systemd']
+                  ];
+              }
+            }
+            default: {
+              fail('Opsmatic Puppet Reporter is not supported on this platform')
+            }
+          }
+        }
       }
     }
     default: {
-      file { '/etc/init/opsmatic-puppet-reporter.conf':
-        ensure  => 'absent',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('opsmatic/puppet_reporter_upstart.erb'),
-      }
-
       exec { 'kill-opsmatic-puppet-reporter':
         command => 'killall -9 opsmatic-puppet-reporter',
         onlyif  => 'pgrep -f opsmatic-puppet-reporter',
