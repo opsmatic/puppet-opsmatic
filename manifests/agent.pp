@@ -18,13 +18,12 @@
 class opsmatic::agent (
   $ensure               = $opsmatic::params::agent_ensure,
   $token                = $opsmatic::params::token,
-  $files_config_enabled = $opsmatic::params::files_config_enabled,
+  $host_alias           = $opsmatic::params::host_alias,
+  $filemonitorlist      = $opsmatic::params::filemonitorlist,
 ) inherits opsmatic::params {
-
   if $token == '' {
     fail("Your Opsmatic install token is not defined in ${token}")
   }
-
   # Install or uninstall the Opsmatic agent. If $ensure above is
   # absent, this will purge the agent.
   case $::operatingsystem {
@@ -70,13 +69,13 @@ class opsmatic::agent (
       fail('Opsmatic Agent is not supported on this platform')
     }
   }
-
   # Now, if we are installing the agent, turn it on. If we're not, then
   # the upstart job config doesn't exist anyways so we cannot use a service
   # definition to stop the agent. Instead, we call an exec to kill it.
   case $ensure {
     'present', 'installed', 'latest': {
       include opsmatic::global
+      include opsmatic::monitor_files
       file { '/etc/opsmatic-agent.conf':
         ensure  => 'present',
         owner   => 'root',
@@ -84,7 +83,6 @@ class opsmatic::agent (
         mode    => '0640',
         content => template('opsmatic/opsmatic-agent.conf.erb'),
       }
-
       case $::operatingsystem {
         'Debian': {
           # Configure the agent client certs
@@ -218,6 +216,7 @@ class opsmatic::agent (
           fail('Opsmatic Agent is not supported on this platform')
         }
       }
+
     }
     default: {
       file { '/etc/opsmatic-agent.conf':
@@ -227,7 +226,12 @@ class opsmatic::agent (
         mode    => '0640',
         content => template('opsmatic/opsmatic-agent.conf.erb'),
       }
-
+      file { '/var/db/opsmatic-agent':
+        ensure  => 'absent',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0640',
+      }
       file { '/etc/default/opsmatic-global':
         ensure  => 'absent',
         owner   => 'root',
@@ -235,7 +239,6 @@ class opsmatic::agent (
         mode    => '0640',
         content => template('opsmatic/opsmatic-global.erb'),
       }
-
       exec { 'kill-opsmatic-agent':
         command => 'killall -9 opsmatic-agent',
         onlyif  => 'pgrep -f opsmatic-agent',

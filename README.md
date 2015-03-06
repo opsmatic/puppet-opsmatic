@@ -16,7 +16,7 @@ Requirements
 The Opsmatic Puppet Reporter, Opsmatic Agent, and Opsmatic CLI tool are supported on the following platforms:
 
   * Ubuntu: 10.04, 11.04, 11.10, 12.04, 12.10, 13.04, 13.10 and 14.04.
-  * CentOS: 6.x.
+  * CentOS: 6.x, 7.x.
 
 
 Usage
@@ -45,11 +45,12 @@ in your puppet configuration:
       puppet_bin => '/usr/bin',
     }
 
-To use this module to install the Opsmatic Agent or the Opsmatic CLI tool you will need to set the variable `$token` in your puppet configuration:
+To use this module to install the Opsmatic Agent or the Opsmatic CLI tool you will need to set the variable `$token` in your puppet configuration (Note that you can include additional attributes below):
 
     class { 'opsmatic::agent':
       token => 'my_integration_token',
     }
+
 
 and to install the Opsmatic CLI tool, simply include the following:
 
@@ -67,9 +68,26 @@ Attributes
 ----------
 
 * `$token` - this is your integration token.
+* `$host_alias` - this is the host alias that will override the default hostname.
+* `$groups` - Array of which group(s) this host is a member of [array of strings]
 * `$ensure` - ensure the Opsmatic Puppet Reporter, Opsmatic Agent, or Opsmatic CLI tool is installed or not. Give it the value `latest` to install the latest version available of the package.
+* `$filemonitorlist` - An array of file-paths to be monitored [array of strings, must be full path of file]
+
+File Monitoring
+---------------
+
+The Opsmatic Agent has the ability to do file integrity monitoring.  You can add a list of these files by passing an array of strings that contain the full file path.  To add this to your Puppet runs do the following:
 
 
+```
+    $filemonitorlist  = ['/etc/nginx/nginx.conf','/etc/ssh/sshd_config','/etc/hosts']
+
+    class { 'opsmatic::agent':
+      ...
+      filemonitorlist => $filemonitorlist,
+      ...
+      }
+```  
 Support
 -------
 
