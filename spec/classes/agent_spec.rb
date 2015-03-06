@@ -23,18 +23,17 @@ describe 'opsmatic::agent', :type => 'class' do
     end
   end
 
-  context 'token => 1234, files_config_enabled => true' do
+  context 'token => 1234' do
     let(:facts) { FACTS }
     let(:params) {{
-      :token => '1234', :files_config_enabled => true
-    }}
+      :token => '1234'    }}
     it do
       should compile.with_all_deps
       should contain_class('opsmatic::debian')
       should contain_package('opsmatic-agent').with(
         'ensure' => 'present')
       should contain_file('/etc/opsmatic-agent.conf').with(
-        'content' => /paths_ignore = \[\]\nfiles_config_enabled = true\ngroups = ""/)
+        'content' => /host_alias = ""\ngroups = ""/)
       should contain_exec('opsmatic_agent_initial_configuration').with(
         'command' => '/usr/bin/config-opsmatic-agent --token=1234')
       should contain_service('opsmatic-agent')

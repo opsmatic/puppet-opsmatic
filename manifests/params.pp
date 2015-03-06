@@ -19,11 +19,8 @@ class opsmatic::params {
   # Integration token
   $token = ''
 
-  # Enable file watching
-  $files_config_enabled = false
-
-  # Paths to ignore by the Opsmatic Gent
-  $paths_ignore = []
+  # Files to monitor outside of defaults
+  $filemonitorlist = []
 
   # What groups the agent should be a member of in list format
   $groups = []

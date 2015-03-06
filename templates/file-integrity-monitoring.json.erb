@@ -1,0 +1,9 @@
+{
+    "files": [
+    <% if @filemonitorlist != [] %>
+        <% @filemonitorlist.each_with_index do |filepath, index| %>
+        { "path": "<%= filepath -%>" }<%= ',' if index < @filemonitorlist.size - 1 %>
+        <% end %>
+    <% end %>
+    ]
+}
