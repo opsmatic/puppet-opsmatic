@@ -9,6 +9,7 @@
 class opsmatic::debian {
   apt::source { 'opsmatic_debian_repo':
     location    => 'https://packagecloud.io/opsmatic/public/any/',
+    include_src => false,
     release     => 'any',
     repos       => 'main',
     key         => 'D59097AB',
