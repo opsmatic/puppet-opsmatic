@@ -73,13 +73,6 @@ class opsmatic::puppet_reporter (
     'present', 'installed', 'latest': {
       case $::operatingsystem {
         'Ubuntu': {
-          file { '/etc/init/opsmatic-puppet-reporter.conf':
-            ensure  => 'present',
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0644',
-            content => template('opsmatic/puppet_reporter_upstart.erb'),
-          }
           service { 'opsmatic-puppet-reporter':
             ensure     => 'running',
             hasrestart => true,
@@ -88,10 +81,8 @@ class opsmatic::puppet_reporter (
             start      => '/sbin/initctl start opsmatic-puppet-reporter',
             stop       => '/sbin/initctl stop opsmatic-puppet-reporter',
             status     => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
-            subscribe  => File['/etc/init/opsmatic-puppet-reporter.conf'],
             require    => [
               Package['opsmatic-puppet-reporter'],
-              File['/etc/init/opsmatic-puppet-reporter.conf'],
             ];
           }
         }
@@ -112,13 +103,6 @@ class opsmatic::puppet_reporter (
         'Centos': {
           case $::operatingsystemmajrelease {
             '6': {
-              file { '/etc/init/opsmatic-puppet-reporter.conf':
-                ensure  => 'present',
-                owner   => 'root',
-                group   => 'root',
-                mode    => '0644',
-                content => template('opsmatic/puppet_reporter_upstart.erb'),
-              }
               service { 'opsmatic-puppet-reporter':
                   ensure    => 'running',
                   hasstatus => true,
@@ -126,10 +110,8 @@ class opsmatic::puppet_reporter (
                   start     => '/sbin/initctl start opsmatic-puppet-reporter',
                   stop      => '/sbin/initctl stop opsmatic-puppet-reporter',
                   status    => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
-                  subscribe => File['/etc/init/opsmatic-puppet-reporter.conf'],
                   require   => [
                     Package['opsmatic-puppet-reporter'],
-                    File['/etc/init/opsmatic-puppet-reporter.conf'],
                   ];
               }
             }
