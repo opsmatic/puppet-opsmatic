@@ -30,14 +30,14 @@ class opsmatic::puppet_reporter (
     'Debian': {
       include opsmatic::debian
       package { 'opsmatic-puppet-reporter-sysv':
-        ensure  => '0.1.122',
+        ensure  => '0.1.125',
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
     'Ubuntu': {
       include opsmatic::debian
       package { 'opsmatic-puppet-reporter':
-        ensure  => '0.1.122',
+        ensure  => '0.1.125',
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
@@ -46,13 +46,13 @@ class opsmatic::puppet_reporter (
       case $::operatingsystemmajrelease {
         '6': {
           package { 'opsmatic-puppet-reporter':
-            ensure  => '0.1.122-1',
+            ensure  => '0.1.125-1',
             require => Yumrepo['opsmatic_rhel_repo'],
           }
         }
         '7': {
           package { 'opsmatic-puppet-reporter-systemd':
-            ensure  => '0.1.122-1',
+            ensure  => '0.1.125-1',
             require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
