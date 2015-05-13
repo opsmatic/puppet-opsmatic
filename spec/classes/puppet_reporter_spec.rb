@@ -30,7 +30,7 @@ describe 'opsmatic::puppet_reporter', :type => 'class' do
       should compile.with_all_deps
       should contain_class('opsmatic::debian')
       should contain_package('opsmatic-puppet-reporter').with(
-        'ensure' => '0.1.122')
+        'ensure' => '0.1.125')
       should contain_service('opsmatic-puppet-reporter')
     end
   end
@@ -41,7 +41,7 @@ describe 'opsmatic::puppet_reporter', :type => 'class' do
     it do
       should compile.with_all_deps
       should contain_package('opsmatic-puppet-reporter').with(
-        'ensure' => '0.1.122')
+        'ensure' => '0.1.125')
 
       should_not contain_service('opsmatic-puppet-reporter')
 
