@@ -45,7 +45,7 @@ class opsmatic::agent (
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
-    'CentOS': {
+    'RedHat', 'CentOS': {
       include opsmatic::rhel
       case $::operatingsystemmajrelease {
         '6': {
@@ -112,7 +112,7 @@ class opsmatic::agent (
             require => Package['opsmatic-agent'];
           }
         }
-        'Centos': {
+        'RedHat', 'CentOS': {
           case $::operatingsystemmajrelease {
             '6': {
               # Configure the agent client certs
@@ -179,7 +179,7 @@ class opsmatic::agent (
             require    => Package['opsmatic-agent'];
           }
         }
-        'CentOS': {
+        'RedHat', 'CentOS': {
           case $::operatingsystemmajrelease {
             '6': {
               service { 'opsmatic-agent':

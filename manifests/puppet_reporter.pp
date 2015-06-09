@@ -41,7 +41,7 @@ class opsmatic::puppet_reporter (
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
-    'CentOS': {
+    'RedHat', 'CentOS': {
       include opsmatic::rhel
       case $::operatingsystemmajrelease {
         '6': {
@@ -100,7 +100,7 @@ class opsmatic::puppet_reporter (
             ];
           }
         }
-        'Centos': {
+        'RedHat', 'CentOS': {
           case $::operatingsystemmajrelease {
             '6': {
               service { 'opsmatic-puppet-reporter':

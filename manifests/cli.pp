@@ -31,7 +31,7 @@ class opsmatic::cli (
         subscribe => File['/etc/default/opsmatic-global'],
       }
     }
-    'CentOS': {
+    'RedHat','CentOS': {
       include opsmatic::global
       include opsmatic::rhel
       package { 'opsmatic-cli':
