@@ -25,7 +25,7 @@ describe 'opsmatic::puppet_reporter', :type => 'class' do
 
   context 'token => 1234' do
     let(:facts) { FACTS }
-    let(:params) {{ :token => '1234' }}
+    let(:params) {{ :token => '1234', :ensure => 'latest' }}
     it do
       should compile.with_all_deps
       should contain_class('opsmatic::debian')
