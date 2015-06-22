@@ -30,14 +30,14 @@ class opsmatic::puppet_reporter (
     'Debian': {
       include opsmatic::debian
       package { 'opsmatic-puppet-reporter-sysv':
-        ensure  => '0.1.125',
+        ensure  => $ensure,
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
     'Ubuntu': {
       include opsmatic::debian
       package { 'opsmatic-puppet-reporter':
-        ensure  => '0.1.125',
+        ensure  => $ensure,
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
@@ -46,13 +46,13 @@ class opsmatic::puppet_reporter (
       case $::operatingsystemmajrelease {
         '6': {
           package { 'opsmatic-puppet-reporter':
-            ensure  => '0.1.125-1',
+            ensure  => $ensure,
             require => Yumrepo['opsmatic_rhel_repo'],
           }
         }
         '7': {
           package { 'opsmatic-puppet-reporter-systemd':
-            ensure  => '0.1.125-1',
+            ensure  => $ensure,
             require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
@@ -81,6 +81,7 @@ class opsmatic::puppet_reporter (
             start      => '/sbin/initctl start opsmatic-puppet-reporter',
             stop       => '/sbin/initctl stop opsmatic-puppet-reporter',
             status     => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
+            subscribe  => [ Package['opsmatic-puppet-reporter'], File[ '/etc/default/opsmatic-global'] ],
             require    => [
               Package['opsmatic-puppet-reporter'],
             ];
@@ -95,6 +96,7 @@ class opsmatic::puppet_reporter (
             start      => '/etc/init.d/opsmatic-puppet-reporter start',
             stop       => '/etc/init.d/opsmatic-puppet-reporter stop',
             status     => '/etc/init.d/opsmatic-puppet-reporter status | grep running',
+            subscribe  => [ Package['opsmatic-puppet-reporter-sysv'], File[ '/etc/default/opsmatic-global'] ],
             require    => [
               Package['opsmatic-puppet-reporter-sysv']
             ];
@@ -110,6 +112,7 @@ class opsmatic::puppet_reporter (
                   start     => '/sbin/initctl start opsmatic-puppet-reporter',
                   stop      => '/sbin/initctl stop opsmatic-puppet-reporter',
                   status    => '/sbin/initctl status opsmatic-puppet-reporter | grep running',
+                  subscribe  => [ Package['opsmatic-puppet-reporter'], File[ '/etc/default/opsmatic-global'] ],
                   require   => [
                     Package['opsmatic-puppet-reporter'],
                   ];
@@ -123,6 +126,7 @@ class opsmatic::puppet_reporter (
                   start     => '/bin/systemctl start opsmatic-puppet-reporter',
                   stop      => '/bin/systemctl stop opsmatic-puppet-reporter',
                   status    => '/bin/systemctl status opsmatic-puppet-reporter | grep running',
+                  subscribe  => [ Package['opsmatic-puppet-reporter-systemd'], File[ '/etc/default/opsmatic-global'] ],
                   require   => [
                     Package['opsmatic-puppet-reporter-systemd']
                   ];
