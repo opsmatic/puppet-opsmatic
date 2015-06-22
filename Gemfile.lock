@@ -54,7 +54,7 @@ PLATFORMS
 DEPENDENCIES
   facter
   puppet
-  puppet-lint
+  puppet-lint (= 0.3.2)
   puppetlabs_spec_helper
   rake
   rspec-hiera-puppet
