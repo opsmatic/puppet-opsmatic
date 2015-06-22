@@ -26,6 +26,7 @@ class opsmatic::puppet_reporter (
 
   # Install or uninstall the Opsmatic Puppet Reporter. If $ensure above is
   # absent, this will purge the reporter.
+  include opsmatic::global
   case $::operatingsystem {
     'Debian': {
       include opsmatic::debian
