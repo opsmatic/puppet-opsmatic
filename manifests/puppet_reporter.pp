@@ -42,10 +42,10 @@ class opsmatic::puppet_reporter (
         require => Apt::Source['opsmatic_debian_repo']
       }
     }
-    'RedHat', 'CentOS': {
+    'RedHat', 'CentOS', 'Amazon': {
       include opsmatic::rhel
       case $::operatingsystemmajrelease {
-        '6': {
+        '6','2015': {
           package { 'opsmatic-puppet-reporter':
             ensure  => $ensure,
             require => Yumrepo['opsmatic_rhel_repo'],
@@ -103,9 +103,9 @@ class opsmatic::puppet_reporter (
             ];
           }
         }
-        'RedHat', 'CentOS': {
+        'RedHat', 'CentOS', 'Amazon': {
           case $::operatingsystemmajrelease {
-            '6': {
+            '6','2015': {
               service { 'opsmatic-puppet-reporter':
                   ensure    => 'running',
                   hasstatus => true,

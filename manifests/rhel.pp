@@ -24,15 +24,17 @@ class opsmatic::rhel {
   exec { 'add Opsmatic GPG key':
     command => 'rpm --import /etc/pki/rpm-gpg/9DAB4A7C_opsmatic-artifacts.key',
     path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-    require => File['/etc/pki/rpm-gpg/9DAB4A7C_opsmatic-artifacts.key']
+    require => File['/etc/pki/rpm-gpg/9DAB4A7C_opsmatic-artifacts.key'],
+    unless  => "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n' | grep opsmatic",
   }
   exec { 'add PackageCloud GPG key':
     command => 'rpm --import /etc/pki/rpm-gpg/D59097AB_packagecloud-repo.key',
     path    => [ '/bin', '/usr/bin', '/sbin', '/usr/sbin' ],
-    require => File['/etc/pki/rpm-gpg/D59097AB_packagecloud-repo.key']
+    require => File['/etc/pki/rpm-gpg/D59097AB_packagecloud-repo.key'],
+    unless  => "rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n' | grep packagecloud",
   }
   case $::operatingsystemmajrelease {
-    '6': {
+    '6','2015': {
       yumrepo { 'opsmatic_rhel_repo':
         baseurl         => 'https://packagecloud.io/opsmatic/public/el/6/$basearch',
         descr           => 'Opsmatic RHEL repository',
