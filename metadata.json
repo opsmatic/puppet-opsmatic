@@ -1,6 +1,6 @@
 {
     "name": "opsmatic",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "source": "https://github.com/opsmatic/puppet-opsmatic",
     "author": "Opsmatic",
     "license": "Apache-2.0",
