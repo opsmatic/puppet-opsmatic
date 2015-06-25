@@ -45,16 +45,14 @@ class opsmatic::puppet_reporter (
     'RedHat', 'CentOS', 'Amazon': {
       include opsmatic::rhel
       case $::operatingsystemmajrelease {
-        '6','2015': {
+        '6','2014','2015': {
           package { 'opsmatic-puppet-reporter':
             ensure  => $ensure,
-            require => Yumrepo['opsmatic_rhel_repo'],
           }
         }
         '7': {
           package { 'opsmatic-puppet-reporter-systemd':
             ensure  => $ensure,
-            require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
         default: {
@@ -105,7 +103,7 @@ class opsmatic::puppet_reporter (
         }
         'RedHat', 'CentOS', 'Amazon': {
           case $::operatingsystemmajrelease {
-            '6','2015': {
+            '6','2014','2015': {
               service { 'opsmatic-puppet-reporter':
                   ensure    => 'running',
                   hasstatus => true,

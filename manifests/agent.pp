@@ -48,16 +48,14 @@ class opsmatic::agent (
     'RedHat', 'CentOS','Amazon': {
       include opsmatic::rhel
       case $::operatingsystemmajrelease {
-        '6','2015': {
+        '6','2014','2015': {
           package { 'opsmatic-agent':
             ensure  => $ensure,
-            require => Yumrepo['opsmatic_rhel_repo'],
           }
         }
         '7': {
           package { 'opsmatic-agent-systemd':
             ensure  => $ensure,
-            require => Yumrepo['opsmatic_rhel7_repo'],
           }
         }
         default: {
@@ -114,7 +112,7 @@ class opsmatic::agent (
         }
         'RedHat', 'CentOS','Amazon': {
           case $::operatingsystemmajrelease {
-            '6','2015': {
+            '6','2014','2015': {
               # Configure the agent client certs
               exec { 'opsmatic_agent_initial_configuration':
                 command => "/usr/bin/config-opsmatic-agent --token=${token}",
@@ -181,7 +179,7 @@ class opsmatic::agent (
         }
         'RedHat', 'CentOS','Amazon': {
           case $::operatingsystemmajrelease {
-            '6','2015': {
+            '6','2014','2015': {
               service { 'opsmatic-agent':
                 ensure     => 'running',
                 hasrestart => true,
