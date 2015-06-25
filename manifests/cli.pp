@@ -31,12 +31,11 @@ class opsmatic::cli (
         subscribe => File['/etc/default/opsmatic-global'],
       }
     }
-    'RedHat','CentOS': {
+    'RedHat','CentOS', 'Amazon': {
       include opsmatic::global
       include opsmatic::rhel
       package { 'opsmatic-cli':
         ensure    => $ensure,
-        require   => Yumrepo['opsmatic_rhel_repo'],
         subscribe => File['/etc/default/opsmatic-global'],
       }
     }
