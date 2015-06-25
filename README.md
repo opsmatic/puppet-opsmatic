@@ -101,4 +101,11 @@ Please create bug reports and feature requests in [GitHub issues] [1]. And feel 
 
 [1]: https://github.com/opsmatic/puppet-opsmatic/issues
 
+Testing
+-------
+
+The repo ships with a lint task you can run using `bundle exec rake lint`
+
+There is also a separate repo at [opsmatic/puppet-opsmatic-kitchen](https://github.com/opsmatic/puppet-opsmatic-kitchen) which contains a `test-kitchen` configuration and an ever-growing set of integration tests. Check out that repo alongside this one and use it to verify that you're not breaking anything.
+
 Author:: Opsmatic Inc. (<support@opsmatic.com>)
