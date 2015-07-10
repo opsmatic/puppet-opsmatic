@@ -1,2 +1,10 @@
 host_alias = "<%= @host_alias %>"
 groups = "<% if @groups != [] %><%= @groups.join(',') %><% end %>"
+
+<% @agent_simple_options_num.each do |key,value| %>
+<%= key %> = <%= value %>
+<% end %>
+
+<% @agent_simple_options_str.each do |key,value| %>
+<%= key %> = "<%= value %>"
+<% end%>

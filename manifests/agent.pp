@@ -16,10 +16,12 @@
 # Opsmatic Inc. (support@opsmatic.com)
 #
 class opsmatic::agent (
-  $ensure               = $opsmatic::params::agent_ensure,
-  $token                = $opsmatic::params::token,
-  $host_alias           = $opsmatic::params::host_alias,
-  $filemonitorlist      = $opsmatic::params::filemonitorlist,
+  $ensure                   = $opsmatic::params::agent_ensure,
+  $token                    = $opsmatic::params::token,
+  $host_alias               = $opsmatic::params::host_alias,
+  $filemonitorlist          = $opsmatic::params::filemonitorlist,
+  $agent_simple_options_num = $opsmatic::params::agent_simple_options_num,
+  $agent_simple_options_str = $opsmatic::params::agent_simple_options_str,
 ) inherits opsmatic::params {
   if $token == '' {
     fail("Your Opsmatic install token is not defined in ${token}")

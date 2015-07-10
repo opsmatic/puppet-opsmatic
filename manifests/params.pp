@@ -13,6 +13,9 @@ class opsmatic::params {
   # Default agent state
   $agent_ensure = 'present'
 
+  $agent_simple_options_num = {}
+  $agent_simple_options_str = {}
+
   # Default CLI tool state
   $cli_ensure = 'present'
 
