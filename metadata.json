@@ -1,5 +1,5 @@
 {
-    "name": "opsmatic",
+    "name": "opsmatic/opsmatic",
     "version": "0.1.10",
     "source": "https://github.com/opsmatic/puppet-opsmatic",
     "author": "Opsmatic",
