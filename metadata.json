@@ -45,6 +45,7 @@
       { "name": "puppet", "version_requirement": "3.x" }
     ],
     "dependencies": [
-      { "name": "puppetlabs/apt", "version_requirement": "1.x" }
+      { "name": "puppetlabs/apt", "version_requirement": "1.x" },
+      { "name": "puppet/download_file", "version_requirement": ">=1.2.0"}
     ]
 }
