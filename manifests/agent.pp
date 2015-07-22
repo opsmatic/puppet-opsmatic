@@ -77,8 +77,9 @@ class opsmatic::agent (
       if !$::windows_agent_version or !($target_build in $::windows_agent_version) {
         $windows_staging_dir_agent = "${opsmatic::params::windows_staging_dir}\\opsmatic-agent-installer"
         $agent_version_staging_dir = "${windows_staging_dir_agent}\\${target_version}"
-        file { [$opsmatic::params::windows_staging_dir, $windows_staging_dir_agent, $agent_version_staging_dir]:
-          ensure => 'directory'
+        file { [$windows_staging_dir_agent, $agent_version_staging_dir]:
+          require => File[$opsmatic::params::windows_staging_dir],
+          ensure  => 'directory'
         }
         download_file { 'Opsmatic Agent Installer':
           require               => File[$agent_version_staging_dir],
@@ -105,9 +106,6 @@ class opsmatic::agent (
           ensure  => 'present',
           content => template('opsmatic/opsmatic-agent.conf.erb')
         }
-      }
-      else {
-        notify {"Skipping Opsmatic Agent installation: Already using build ${target_build}":}
       }
     }
     default: {
