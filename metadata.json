@@ -1,5 +1,5 @@
 {
-    "name": "opsmatic",
+    "name": "opsmatic/opsmatic",
     "version": "0.1.10",
     "source": "https://github.com/opsmatic/puppet-opsmatic",
     "author": "Opsmatic",
@@ -45,6 +45,7 @@
       { "name": "puppet", "version_requirement": "3.x" }
     ],
     "dependencies": [
-      { "name": "puppetlabs/apt", "version_requirement": "1.x" }
+      { "name": "puppetlabs/apt", "version_requirement": "1.x" },
+      { "name": "puppet/download_file", "version_requirement": ">=1.2.0"}
     ]
 }

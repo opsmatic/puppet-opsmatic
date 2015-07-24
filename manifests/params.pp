@@ -33,4 +33,16 @@ class opsmatic::params {
 
   # Location of the Puppet executable
   $puppet_bin = ''
+
+  # Staging directory on Windows
+  if $::operatingsystem == 'windows' {
+    $windows_staging_dir = "${::windows_temp_dir}\\opsmatic"
+    file { $windows_staging_dir:
+      ensure  => 'directory'
+    }
+  }
+
+  # Where to get non-package-manager packages from
+  $download_base = 'https://s3-us-west-2.amazonaws.com/opsmatic-downloads'
+  $download_proxy_address = ''
 }
