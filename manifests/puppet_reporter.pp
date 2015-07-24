@@ -40,8 +40,8 @@ class opsmatic::puppet_reporter (
         $windows_staging_dir_reporter = "${opsmatic::params::windows_staging_dir}\\opsmatic-puppet-reporter"
         $reporter_version_staging_dir = "${windows_staging_dir_reporter}\\${target_version}"
         file { [$windows_staging_dir_reporter, $reporter_version_staging_dir]:
-          require => File[$opsmatic::params::windows_staging_dir],
-          ensure  => 'directory'
+          ensure  => 'directory',
+          require => File[$opsmatic::params::windows_staging_dir]
         }
         download_file { 'Opsmatic Puppet Reporter Installer':
           require               => File[$reporter_version_staging_dir],
@@ -52,15 +52,15 @@ class opsmatic::puppet_reporter (
 
         $win_unzip_zipfile = "${reporter_version_staging_dir}\\opsmatic-puppet-reporter_${target_version}_windows_386.zip"
         $win_unzip_dest    = $reporter_version_staging_dir
-        exec { "Unzip Puppet Reporter Installer":
+        exec { 'Unzip Puppet Reporter Installer':
           require  => Download_file['Opsmatic Puppet Reporter Installer'],
-          command  => template("opsmatic/unzip.ps1.erb"),
+          command  => template('opsmatic/unzip.ps1.erb'),
           provider => 'powershell',
           creates  => "${reporter_version_staging_dir}\\opsmatic-puppet-reporter.exe"
         }
 
-        exec { "Install Opsmatic Puppet Reporter":
-          require => Exec["Unzip Puppet Reporter Installer"],
+        exec { 'Install Opsmatic Puppet Reporter':
+          require => Exec['Unzip Puppet Reporter Installer'],
           command => "${reporter_version_staging_dir}\\install-opsmatic-puppet-reporter.exe -token ${token}"
         }
       }
@@ -125,8 +125,8 @@ class opsmatic::puppet_reporter (
             mode    => '0640'
           }
           file { '/etc/opsmatic/opsmatic-puppet-reporter.conf':
-            require => File['/etc/opsmatic'],
             ensure  => 'present',
+            require => File['/etc/opsmatic'],
             owner   => 'root',
             group   => 'root',
             mode    => '0640',

@@ -78,8 +78,8 @@ class opsmatic::agent (
         $windows_staging_dir_agent = "${opsmatic::params::windows_staging_dir}\\opsmatic-agent-installer"
         $agent_version_staging_dir = "${windows_staging_dir_agent}\\${target_version}"
         file { [$windows_staging_dir_agent, $agent_version_staging_dir]:
-          require => File[$opsmatic::params::windows_staging_dir],
-          ensure  => 'directory'
+          ensure  => 'directory',
+          require => File[$opsmatic::params::windows_staging_dir]
         }
         download_file { 'Opsmatic Agent Installer':
           require               => File[$agent_version_staging_dir],
@@ -90,20 +90,20 @@ class opsmatic::agent (
 
         $win_unzip_zipfile = "${agent_version_staging_dir}\\opsmatic-agent_${target_version}_windows_386.zip"
         $win_unzip_dest    = $agent_version_staging_dir
-        exec { "Unzip Agent Installer":
+        exec { 'Unzip Agent Installer':
           require  => Download_file['Opsmatic Agent Installer'],
-          command  => template("opsmatic/unzip.ps1.erb"),
+          command  => template('opsmatic/unzip.ps1.erb'),
           provider => 'powershell',
           creates  => "${agent_version_staging_dir}\\opsmatic-agent.exe"
         }
 
-        exec { "Install Opsmatic Agent":
-          require => Exec["Unzip Agent Installer"],
+        exec { 'Install Opsmatic Agent':
+          require => Exec['Unzip Agent Installer'],
           command => "${agent_version_staging_dir}\\config-opsmatic-agent.exe -token ${token}"
         }
         file { 'C:\Program Files\Opsmatic\opsmatic-agent\opsmatic-agent.conf':
-          require => Exec['Install Opsmatic Agent'],
           ensure  => 'present',
+          require => Exec['Install Opsmatic Agent'],
           content => template('opsmatic/opsmatic-agent.conf.erb')
         }
       }
